@@ -239,13 +239,6 @@ int main()
 	sgInitializationWindows(FormGrid, FormBar, FormCon);
 	cout << "Initizal ..." <<endl;
 
-	Offset ohex(q, r, Mode);
-	ohex.sgCout();
-	Cube chex(ohex);
-	chex.sgCout();
-	//Offset(chex).sgCout();
-	Offset ohex2 = sgOffsettoCube(chex);
-	ohex2.sgCout();
 	//½øÈë»æÍ¼
 	while(1)
 	{
