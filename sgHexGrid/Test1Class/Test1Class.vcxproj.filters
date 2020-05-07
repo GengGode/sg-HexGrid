@@ -33,6 +33,27 @@
     <ClCompile Include="Off.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BasePoint.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Point2d.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BasePointCenter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCenter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCorner.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hex.h">
@@ -48,6 +69,27 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Off.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BasePoint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Point2d.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BasePointCenter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCenter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCorner.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

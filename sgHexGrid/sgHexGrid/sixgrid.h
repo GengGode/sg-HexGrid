@@ -6,8 +6,8 @@ using namespace std;
 #ifndef SIXGRID_H
 #define SIXGRID_H
 
-#define DEFAULT_R 4
-#define DEFAULT_LINEWIDTH 2
+#define DEFAULT_R 3.6
+#define DEFAULT_LINEWIDTH 1.8
 
 namespace sg
 {
@@ -268,6 +268,8 @@ namespace sg
 	
 	Offset sgOffsettoCube(Cube cube);
 
+	int sgCeil(double In);
+
 	int sgParity(int In);
 	int sgLogic(int In);
 	int sgSign(int In);
@@ -294,7 +296,7 @@ namespace sg
 
 	Grid GridCreate(int row, int col);
 	//void GridCreate(int row, int col, Grid G);
-	void SixGrid(double In[2][6], int m, int n, double r, int lineWidth);
+	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth);
 	void GridImg(Mat Img, int p, int q, Scalar C);
 
 	void GridShow(Mat Img, Grid Data);

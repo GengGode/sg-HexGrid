@@ -34,71 +34,52 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	{
 	case EVENT_MOUSEMOVE:
 	{
-		m = cvCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		n = cvCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		m = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		n = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 		q = m;
 		r = n;
 		p = m;
 		s = n;
-		//ohex.col = q;
-		//ohex.row = r;
-		//Cube chex(ohex);
 		NeighborhoodLocal(MODE, m, n, Nei);
 		if (DrawLFlag)
 		{
-			if (q - 1 >= 0 && q - 1 < grid.sgRow && r >= 0 && r < grid.sgCol)
-				grid.sgMat[q - 1][r] = 1;
+			if (q >= 0 && q < grid.sgRow && r >= 0 && r < grid.sgCol)
+				grid.sgMat[q][r] = 1;
 			if (B==2)
 				for (int i = 0; i < 6; i++)
 				{
-					//ctmp = chex + cubeNei[i];
-					////ctmp.sgCout();
-					//otmp = sgOffsettoCube(ctmp);
-					//tm = otmp.col - 1;
-					//tn = otmp.row;
 					tm = Nei[0][i];
 					tn = Nei[1][i];
-					if (tm - 1 >= 0 && tm - 1 < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-						grid.sgMat[tm-1][tn] = 1;
+					if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
+						grid.sgMat[tm][tn] = 1;
 				}
 		}
 			
 
 		if (DrawRFlag)
 		{
-			if (p - 1 >= 0 && p - 1 < grid.sgRow && s >= 0 && s < grid.sgCol)
-				grid.sgMat[p - 1][s] = 0;
+			if (p >= 0 && p < grid.sgRow && s >= 0 && s < grid.sgCol)
+				grid.sgMat[p][s] = 0;
 			if (B == 2)
 				for (int i = 0; i < 6; i++)
 				{
-					//ctmp = chex + cubeNei[i];
-					////ctmp.sgCout();
-					//otmp = sgOffsettoCube(ctmp);
-					//tm = otmp.col - 1;
-					//tn = otmp.row;
 					tm = Nei[0][i];
 					tn = Nei[1][i];
-					if (tm - 1 >= 0 && tm - 1 < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-						grid.sgMat[tm - 1][tn] = 0;
+					if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
+						grid.sgMat[tm][tn] = 0;
 				}
 		}
-			
 		if (B == 2)
 			for (int i = 0; i < 6; i++)
 			{
-				//ctmp = chex + cubeNei[i];
-				//ctmp.sgCout();
-				//otmp = sgOffsettoCube(ctmp);
-				//m = otmp.col - 1;
-				//n = otmp.row;
 				m = Nei[0][i];
 				n = Nei[1][i];
-				if (m - 1 >= 0 && m - 1 < grid.sgRow && n >= 0 && n < grid.sgCol)
-					sg::GridImg(mat, m - 1, n, Scalar(255, 255, 0));
+				if (m  >= 0 && m  < grid.sgRow && n >= 0 && n < grid.sgCol)
+					sg::GridImg(mat, m , n, Scalar(255, 255, 0));
 			}
-		if (m - 1 >= 0 && m - 1 < grid.sgRow && n >= 0 && n < grid.sgCol)
+		if (m  >= 0 && m  < grid.sgRow && n >= 0 && n < grid.sgCol)
 		{
-			sg::GridImg(mat, m - 1, n, Scalar(255, 255, 0));
+			sg::GridImg(mat, m , n, Scalar(255, 255, 0));
 			imshow(FormGrid, mat);
 		}
 	}
@@ -106,14 +87,11 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_LBUTTONDOWN:
 	{
 		DrawLFlag = true;
-		q = cvCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		r = cvCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		//ohex.col = q;
-		//ohex.row = r;
-		//Cube chex(ohex);
+		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		r = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 		NeighborhoodLocal(MODE,q, r, Nei);
-		if (q - 1 >= 0 && q - 1 < grid.sgRow && r >= 0 && r < grid.sgCol)
-			grid.sgMat[q - 1][r] = 1;
+		if (q >= 0 && q < grid.sgRow && r >= 0 && r < grid.sgCol)
+			grid.sgMat[q][r] = 1;
 		if (B == 2)
 			for (int i = 0; i < 6; i++)
 			{
@@ -124,8 +102,8 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 				//tn = otmp.row;
 				tm = Nei[0][i];
 				tn = Nei[1][i];
-				if (tm - 1 >= 0 && tm - 1 < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-					grid.sgMat[tm - 1][tn] = 1;
+				if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
+					grid.sgMat[tm][tn] = 1;
 			}
 		
 	}
@@ -133,42 +111,34 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_LBUTTONUP:
 	{
 		DrawLFlag = false;
-		q = cvCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		r = cvCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		r = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 	}
 	break;
 	case EVENT_RBUTTONDOWN:
 	{
 		DrawRFlag = true;
 
-		p = cvCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		s = cvCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		//ohex.col = p;
-		//ohex.row = s;
-		//Cube chex(ohex);
+		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		s = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 		NeighborhoodLocal(MODE,p, s, Nei);
-		if (p - 1 >= 0 && p - 1 < grid.sgRow && s >= 0 && s < grid.sgCol)
-			grid.sgMat[p - 1][s] = 0;
+		if (p >= 0 && p < grid.sgRow && s >= 0 && s < grid.sgCol)
+			grid.sgMat[p][s] = 0;
 		if (B == 2)
 			for (int i = 0; i < 6; i++)
 			{
-				//ctmp = chex + cubeNei[i];
-				////ctmp.sgCout();
-				//otmp = sgOffsettoCube(ctmp);
-				//tm = otmp.col - 1;
-				//tn = otmp.row;
 				tm = Nei[0][i];
 				tn = Nei[1][i];
-				if (tm - 1 >= 0 && tm - 1 < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-					grid.sgMat[tm - 1][tn] = 0;
+				if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
+					grid.sgMat[tm][tn] = 0;
 			}
 	}
 	break;
 	case EVENT_RBUTTONUP:
 	{
 		DrawRFlag = false;
-		p = cvCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		s = cvCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		s = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 	}
 	break;
 	}
@@ -216,7 +186,7 @@ int main()
 	//存活率显示条绘制
 	for (i = 0; i < 300; i++)
 	{
-		s_c[i] = cvCeil(sN[i] / 144);
+		s_c[i] = sgCeil(sN[i] / 144);
 		for (j = 0; j < 100; j++)
 		{
 			if (s_c[i] == j)
@@ -257,7 +227,7 @@ int main()
 		
 		for (i = 0; i < 300; i++)
 		{
-			s_c[i] = cvCeil(sN[i] / 144);
+			s_c[i] = sgCeil(sN[i] / 144);
 			for (j = 0; j < 100; j++)
 			{
 				if (s_c[i] == j)
@@ -318,7 +288,7 @@ int main()
 				
 				for (i = 0; i < 300; i++)
 				{
-					s_c[i] = cvCeil(sN[i] / 144);
+					s_c[i] = sgCeil(sN[i] / 144);
 					for (j = 0; j < 100; j++)
 					{
 						if (s_c[i] == j)

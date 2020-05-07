@@ -93,6 +93,20 @@ namespace sg
 		}
 		return offset;
 	}
+	int sgCeil(double In)
+	{
+		int Out = (int) In;
+		//if (Out-In>=0.5)Out+=1;
+		if (In >= 0)
+		{
+			if (Out - In >= 0.5)Out += 1;
+		}
+		else
+		{
+			if (In - Out >= 0.5)Out -= 1;
+		}
+		return Out;
+	}
 
 	int sgParity(int In)
 	{
@@ -402,7 +416,7 @@ namespace sg
 		}
 	}
 	*/
-	void SixGrid(double In[2][6], int m, int n, double r, int lineWidth)
+	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth)
 	{
 		double pi = 3.1415, root3 = 1.7321*(r + lineWidth);
 		double theta0 = 0.5236;
@@ -423,7 +437,7 @@ namespace sg
 
 	void GridImg(Mat Img, int p, int q, Scalar C)
 	{
-		int dx = DEFAULT_R, dy = DEFAULT_R;
+		double dx = DEFAULT_R, dy = DEFAULT_R;
 		Point point[1][6];
 		int np[] = { 6 };
 		double grid[2][6];
@@ -433,7 +447,8 @@ namespace sg
 
 		for (int k = 0; k < 6; k++)
 		{
-			point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
+			point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
+			//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
 		}
 		fillPoly(Img, pp, np, 1, C, 1);
 	}
