@@ -7,7 +7,7 @@ Cube cubeNei[] = {
 		Cube(+1, -1, 0), Cube(+1, 0, -1), Cube(0, +1, -1),
 			Cube(-1, +1, 0), Cube(-1, 0, +1), Cube(0, -1, +1),
 };
-int B = 1;
+int B = 2;
 int q = 1;
 int r = 1;
 int p = 1;
@@ -27,8 +27,11 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	Offset otmp;
 
 	int Nei[2][6] = { 0 };
+	int Nei2[2][6] = { 0 };
+	int Nei3[2][6] = { 0 };
 	int m=0, n=0;
 	int tm = 0, tn = 0;
+	int tm2 = 0, tn2 = 0;
 
 	switch (event)
 	{
@@ -40,43 +43,66 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 		r = n;
 		p = m;
 		s = n;
+
 		NeighborhoodLocal(MODE, m, n, Nei);
+		NeighborhoodLocal2(MODE, m, n, Nei2);
+		NeighborhoodLocal3(MODE, p, s, Nei3);
+
 		if (DrawLFlag)
 		{
 			if (q >= 0 && q < grid.sgRow && r >= 0 && r < grid.sgCol)
 				grid.sgMat[q][r] = 1;
-			if (B==2)
-				for (int i = 0; i < 6; i++)
+			if (B >= 2)for (int i = 0; i < 6; i++)
+			{
+				sgGridSet6Point(grid, Nei, 1);
+				if (B >= 3)
 				{
-					tm = Nei[0][i];
-					tn = Nei[1][i];
-					if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-						grid.sgMat[tm][tn] = 1;
+					sgGridSet6Point(grid, Nei2, 1);
+					if (B >= 4)
+					{
+						sgGridSet6Point(grid, Nei3, 1);
+					}
 				}
+			}
 		}
-			
-
 		if (DrawRFlag)
 		{
 			if (p >= 0 && p < grid.sgRow && s >= 0 && s < grid.sgCol)
 				grid.sgMat[p][s] = 0;
-			if (B == 2)
-				for (int i = 0; i < 6; i++)
-				{
-					tm = Nei[0][i];
-					tn = Nei[1][i];
-					if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-						grid.sgMat[tm][tn] = 0;
-				}
-		}
-		if (B == 2)
-			for (int i = 0; i < 6; i++)
+			if (B >= 2)for (int i = 0; i < 6; i++)
 			{
-				m = Nei[0][i];
-				n = Nei[1][i];
-				if (m  >= 0 && m  < grid.sgRow && n >= 0 && n < grid.sgCol)
-					sg::GridImg(mat, m , n, Scalar(255, 255, 0));
+				sgGridSet6Point(grid, Nei, 0);
+				if (B >= 3)
+				{
+					sgGridSet6Point(grid, Nei2, 0);
+					if (B >= 4)
+					{
+						sgGridSet6Point(grid, Nei3, 0);
+					}
+				}
 			}
+		}
+		if (B >= 2)for (int i = 0; i < 6; i++)
+		{
+			m = Nei[0][i];
+			n = Nei[1][i];
+			if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
+				sg::GridImg(mat, m, n, Scalar(255, 255, 0));
+			if (B >= 3)
+			{
+				m = Nei2[0][i];
+				n = Nei2[1][i];
+				if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
+					sg::GridImg(mat, m, n, Scalar(255, 255, 0));
+				if (B >= 4)
+				{
+					m = Nei3[0][i];
+					n = Nei3[1][i];
+					if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
+						sg::GridImg(mat, m, n, Scalar(255, 255, 0));
+				}
+			}
+		}
 		if (m  >= 0 && m  < grid.sgRow && n >= 0 && n < grid.sgCol)
 		{
 			sg::GridImg(mat, m , n, Scalar(255, 255, 0));
@@ -89,56 +115,61 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 		DrawLFlag = true;
 		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
 		r = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+
 		NeighborhoodLocal(MODE,q, r, Nei);
+		NeighborhoodLocal2(MODE, q, r, Nei2);
+		NeighborhoodLocal3(MODE, p, s, Nei3);
+
 		if (q >= 0 && q < grid.sgRow && r >= 0 && r < grid.sgCol)
 			grid.sgMat[q][r] = 1;
-		if (B == 2)
-			for (int i = 0; i < 6; i++)
+		if (B >= 2)for (int i = 0; i < 6; i++)
+		{
+			sgGridSet6Point(grid, Nei, 1);
+			if (B >= 3)
 			{
-				//ctmp = chex + cubeNei[i];
-				////ctmp.sgCout();
-				//otmp = sgOffsettoCube(ctmp);
-				//tm = otmp.col - 1;
-				//tn = otmp.row;
-				tm = Nei[0][i];
-				tn = Nei[1][i];
-				if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-					grid.sgMat[tm][tn] = 1;
+				sgGridSet6Point(grid, Nei2, 1);
+				if (B >= 4)
+				{
+					sgGridSet6Point(grid, Nei3, 1);
+				}
 			}
-		
+		}
 	}
 	break;
 	case EVENT_LBUTTONUP:
 	{
 		DrawLFlag = false;
-		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		r = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 	}
 	break;
 	case EVENT_RBUTTONDOWN:
 	{
 		DrawRFlag = true;
-
 		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
 		s = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+
 		NeighborhoodLocal(MODE,p, s, Nei);
+		NeighborhoodLocal2(MODE, p, s, Nei2);
+		NeighborhoodLocal3(MODE, p, s, Nei3);
+
 		if (p >= 0 && p < grid.sgRow && s >= 0 && s < grid.sgCol)
 			grid.sgMat[p][s] = 0;
-		if (B == 2)
-			for (int i = 0; i < 6; i++)
+		if (B >= 2)for (int i = 0; i < 6; i++)
+		{
+			sgGridSet6Point(grid, Nei, 0);
+			if (B >= 3)
 			{
-				tm = Nei[0][i];
-				tn = Nei[1][i];
-				if (tm >= 0 && tm < grid.sgRow && tn >= 0 && tn < grid.sgCol)
-					grid.sgMat[tm][tn] = 0;
+				sgGridSet6Point(grid, Nei2, 0);
+				if (B >= 4)
+				{
+					sgGridSet6Point(grid, Nei3, 0);
+				}
 			}
+		}
 	}
 	break;
 	case EVENT_RBUTTONUP:
 	{
 		DrawRFlag = false;
-		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		s = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
 	}
 	break;
 	}
@@ -147,16 +178,16 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 
 int main()
 {
-	int len = 100;
-	int time = 0, T = 240, i, j;
+	int len =120;// 100;
+	int time = 0, T = 200, i, j;
 	char key = '0';
 
 	int sN[300] = { 0 };
 	int s_c[300] = { 0 };
 	double tmp = 0;
 	int p = 0;
-	int cN = 14400;
-
+	double cN =  len * len;//14400;
+	//cout << cN << endl;
 	//显示条窗口名
 	char FormBar[] = "Form Bar";
 	//控制台程序窗口名
@@ -165,13 +196,18 @@ int main()
 
 	GridMode Mode(sgMode0,sgMode0);
 	Grid G(len), Gnext(len);
-	int hExist[] = { 3 };
-	int hDeath[] = { 0,1,2,4,5,6};
-	Rule hE(hExist);
-	Rule hD(hDeath);
+	//snow:234_34 or 34_34
+	//45_56
+	//5678_67
+	int hExist[] = { 5,6,7,8};
+	int hDeath[] = { 6,7};//{4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
+	Rule hE(hExist, sizeof(hExist) / sizeof(hExist[0]));
+	Rule hD(hDeath, sizeof(hDeath) / sizeof(hDeath[0]));
+	//hE.out();
+	//hD.out();
 	Rules hR(hE,hD);
 
-	G.sgMat[40][30] = 1;
+	//G.sgMat[40][30] = 1;
 
 	Mat Img(sgMaxRow(G), sgMaxCol(G), CV_8UC3, Scalar(128, 128, 128)), tempImg;
 	Mat bar(100, 300, CV_8UC3, Scalar(0, 0, 0));
@@ -182,11 +218,41 @@ int main()
 	setMouseCallback(FormGrid, on_MouseHandle, (void*)&GM);
 
 	
+	//{
+	//	Grid TestG(10);
+	//	Mat TestImg(sgMaxRow(TestG), sgMaxCol(TestG), CV_8UC3, Scalar(128, 128, 128));
+	//	GridImage TestGM(TestG, TestImg);
+
+	//	double dx = 5, dy = 1;
+	//	Point point[1][6];
+	//	int np[] = { 6 };
+	//	double grid[2][6];
+	//	const Point* pp[1] = { point[0] };
+
+	//	SixGrid(grid, 5, 5, dx,dy);
+
+	//	for (int k = 0; k < 6; k++)
+	//	{
+	//		point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
+	//		cout << " " << point[0][k] << " " << grid[0][k] << " " << grid[1][k] <<" " << dx << " " << dy<< endl;
+	//		//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
+	//	}
+	//	fillPoly(TestImg, pp, np, 1, Scalar(255,255,255), 1);
+	//	SixGrid(grid, 6, 5, dx, dy);
+
+	//	for (int k = 0; k < 6; k++)
+	//	{
+	//		//point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
+	//		point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
+	//	}
+	//	fillPoly(TestImg, pp, np, 1, Scalar(255, 255, 255), 1);
+	//	imshow("Test", TestImg);
+	//}
 
 	//存活率显示条绘制
 	for (i = 0; i < 300; i++)
 	{
-		s_c[i] = sgCeil(sN[i] / 144);
+		s_c[i] = sgCeil(sN[i] / cN * 100);
 		for (j = 0; j < 100; j++)
 		{
 			if (s_c[i] == j)
@@ -227,7 +293,7 @@ int main()
 		
 		for (i = 0; i < 300; i++)
 		{
-			s_c[i] = sgCeil(sN[i] / 144);
+			s_c[i] = sgCeil(sN[i] / cN * 100);
 			for (j = 0; j < 100; j++)
 			{
 				if (s_c[i] == j)
@@ -270,7 +336,8 @@ int main()
 					break;
 				}
 				//NextStep(Mode, G, Gnext, h);
-				NextStep(Mode, G, Gnext, hR);
+				//NextStep2(Mode, G, Gnext, hR);
+				NextStep3(Mode, G, Gnext, hR);
 				reG(G, Gnext);
 
 				GridShow(Img, G);
@@ -288,7 +355,7 @@ int main()
 				
 				for (i = 0; i < 300; i++)
 				{
-					s_c[i] = sgCeil(sN[i] / 144);
+					s_c[i] = sgCeil(sN[i] / cN * 100);
 					for (j = 0; j < 100; j++)
 					{
 						if (s_c[i] == j)
@@ -324,6 +391,11 @@ int main()
 					if (T <= 0)T = 10;
 					cout << "Change T down : " << T << "ms" << endl;
 				}
+				else if (key == 'o')
+				{
+					key = '0';
+					cout << "Stata: Exist: " << s_c[p] << " %" << endl;
+				}
 				
 			}
 		}
@@ -334,6 +406,17 @@ int main()
 				for (j = 0; j < G.sgCol; j++)
 					G.sgMat[i][j] = 0;
 			cout << "Stata: Clear " << endl;
+		}
+		else if (key == 'r')
+		{
+			key = '0';
+			G.Rand();
+			cout << "Stata: Random Create " << endl;
+		}
+		else if (key == 'o')
+		{
+			key = '0';
+			cout << "Stata: Exist: "<< s_c[p] <<" %"<< endl;
 		}
 		if (key == '+')
 		{
@@ -380,9 +463,9 @@ int main()
 			cin >> tmpkey;
 			if (tmpkey == 'y' || tmpkey == 'Y')
 			{
-				hE.lis = sgRuleInputLis(InE);
+				//hE.lis = sgRuleInputLis(InE);
 				hE.count = sgRuleInputCount(InE);
-				hD.lis = sgRuleInputLis(InD);
+				//hD.lis = sgRuleInputLis(InD);
 				hD.count = sgRuleInputCount(InD);
 				cout << "Exist: " <<hE.count<< endl;
 				for (i = 0; i < hE.count; i++)

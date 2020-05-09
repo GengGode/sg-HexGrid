@@ -6,8 +6,8 @@ using namespace std;
 #ifndef SIXGRID_H
 #define SIXGRID_H
 
-#define DEFAULT_R 3.6
-#define DEFAULT_LINEWIDTH 1.8
+#define DEFAULT_R 4.2  //3.6
+#define DEFAULT_LINEWIDTH 1.2  //1.8
 
 namespace sg
 {
@@ -65,6 +65,24 @@ namespace sg
 				}
 			}
 		}
+		void Rand()
+		{
+			for (int i = 0; i < sgRow; i++)
+				for (int j = 0; j < sgCol; j++)
+					if (rand() % 100 <= 20)
+						sgMat[i][j] = 1;
+					else
+						sgMat[i][j] = 0;
+		}
+		void Rand(int k)
+		{
+			for (int i = 0; i < sgRow; i++)
+				for (int j = 0; j < sgCol; j++)
+					if (rand() % 100 <= k)
+						sgMat[i][j] = 1;
+					else
+						sgMat[i][j] = 0;
+		}
 	}; 
 
 	struct GridImage
@@ -79,13 +97,29 @@ namespace sg
 		int *lis;
 		int count;
 		Rule(){}
-		Rule(int *lis_):lis(lis_) {
-			count=sizeof(lis_) / sizeof(lis_[0]);
+		Rule(int Lis_[20])
+		{
+			int tmp[20];
+			for (int i = 0; i < 20; i++)tmp[i] = Lis_[i];
+			count=sizeof(Lis_) / sizeof(Lis_[0]);
+			if (count > 20)count = 20;
+			for(int i=0;i<count;i++)
+				lis[i] = Lis_[i];
 		}
-		Rule(int *lis_,int count_):lis(lis_),count(count_) {
-			if (count != sizeof(lis_) / sizeof(lis_[0]))
-				if (count <= sizeof(lis_) / sizeof(lis_[0]))
-					count = sizeof(lis_) / sizeof(lis_[0]);
+		Rule(int *lis_,int count_):count(count_) {
+			//if (count != sizeof(lis_) / sizeof(lis_[0]))
+			//	if (count <= sizeof(lis_) / sizeof(lis_[0]))
+			//		count = sizeof(lis_) / sizeof(lis_[0]);
+			lis = new int[count];
+			for (int i = 0; i < count; i++)
+				lis[i] = lis_[i];
+			//cout << lis << endl;
+		}
+		void out()
+		{
+			for (int i = 0; i < count; i++)
+				cout << " " << lis[i];
+			cout << "\n" << count << endl;
 		}
 	};
 
@@ -300,9 +334,19 @@ namespace sg
 	void GridImg(Mat Img, int p, int q, Scalar C);
 
 	void GridShow(Mat Img, Grid Data);
-	
+
+	void sgGridSet6Point(Grid G, int In[2][6], int Stata);
+
 	void NeighborhoodLocal(sg::GridMode Mode, int x, int y, int NeighLocal[2][6]);
 	void NeighborhoodData(Grid Data, int NeighLocal[2][6], int NeighData[1][6]);
+
+
+	void NextStep2(sg::GridMode Mode, Grid G, Grid Gn, Rules H);
+	void NeighborhoodLocal2(sg::GridMode Mode, int x, int y, int NeighLocal[2][6]);
+
+	void NextStep3(sg::GridMode Mode, Grid G, Grid Gn, Rules H);
+	void NeighborhoodLocal3(sg::GridMode Mode, int x, int y, int NeighLocal[2][6]);
+
 
 	BOOL CALLBACK EnumWindowsProc_0(HWND hWnd, LPARAM IProgress);
 	void SetDesktop(char FormName[]);

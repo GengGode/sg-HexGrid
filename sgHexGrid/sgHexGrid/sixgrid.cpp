@@ -222,8 +222,6 @@ namespace sg
 		return sum;
 	}
 
-
-
 	int sgRuleInputCount(char In[10])
 	{
 		int Ini = 0;
@@ -382,40 +380,6 @@ namespace sg
 		}
 	}
 
-	Grid GridCreate(int row, int col)
-	{
-		int i, j;
-		Grid G;
-		G.sgRow = row;
-		G.sgCol = col;
-		G.sgMat = new int*[row];
-		for (i = 0; i < row; i++)
-		{
-			G.sgMat[i] = new int[col];
-			for (j = 0; j < col; j++)
-			{
-				G.sgMat[i][j] = 0;
-			}
-		}
-		return G;
-	}
-	/*
-	void GridCreate(int row,int col,Grid G)
-	{
-		int i, j;
-		G.sgRow = row;
-		G.sgCol = col;
-		G.sgMat = new int*[row];
-		for (i=0;i<row;i++)
-		{
-			G.sgMat[i] = new int[col];
-			for (j = 0; j < col; j++)
-			{
-				G.sgMat[i][j] = 0;
-			}
-		}
-	}
-	*/
 	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth)
 	{
 		double pi = 3.1415, root3 = 1.7321*(r + lineWidth);
@@ -450,7 +414,13 @@ namespace sg
 			point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
 			//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
 		}
-		fillPoly(Img, pp, np, 1, C, 1);
+		if (DEFAULT_R <= 1)
+			//Img.at(point[0][1]) = C;
+			//if (point[0][0].x >= 0 && point[0][0].x <= Img.rows&&point[0][0].y >= 0 && point[0][0].y <= Img.cols)
+			//Img.at<Vec3b>(point[0][0].x, point[0][0].y) = Vec3b(0,0,0); //= C;
+			circle(Img, point[0][0], 2, C, -1);
+		else
+			fillPoly(Img, pp, np, 1, C, 1);
 	}
 
 	void GridShow(Mat Img, Grid Data)
@@ -471,6 +441,18 @@ namespace sg
 				}
 
 			}
+		}
+	}
+
+	void sgGridSet6Point(Grid G, int In[2][6], int Stata)
+	{
+		int i, m, n;
+		for (i = 0; i < 6; i++)
+		{
+			m = In[0][i];
+			n = In[1][i];
+			if (m >= 0 && m < G.sgRow&&n >= 0 && n < G.sgCol)
+				G.sgMat[m][n] = Stata;
 		}
 	}
 
@@ -606,6 +588,340 @@ namespace sg
 		}
 	}
 
+#pragma region Test_Neigh_2
+
+	void NextStep2(sg::GridMode Mode, Grid G, Grid Gn, Rules H)
+	{
+		int i, j;
+		int sumGrid = 0;
+		int sumGrid2 = 0;
+		int NeighLocal[2][6] = { 0 };
+		int NeighData[1][6] = { 0 };
+		int NeighLocal2[2][6] = { 0 };
+		int NeighData2[1][6] = { 0 };
+		for (i = 0; i < G.sgRow; i++)
+		{
+			for (j = 0; j < G.sgCol; j++)
+			{
+				NeighborhoodLocal(Mode, i, j, NeighLocal);
+				NeighborhoodData(G, NeighLocal, NeighData);
+				NeighborhoodLocal2(Mode, i, j, NeighLocal2);
+				NeighborhoodData(G, NeighLocal2, NeighData2);
+				sumGrid = sgSum6(NeighData);
+				sumGrid2 = sgSum6(NeighData2);
+				//if (i == 0 && j == 0)cout << sumGrid << endl;
+				if (G.sgMat[i][j] == 1)
+				{
+					//36 13
+					if (sgIsSub(sumGrid+ sumGrid2, H.hExist))
+					{
+						Gn.sgMat[i][j] = 1;
+					}
+					else
+					{
+						Gn.sgMat[i][j] = 0;
+					}
+				}
+				else if (G.sgMat[i][j] == 0)
+				{
+					//1235 132
+					if (sgIsSub(sumGrid+ sumGrid2, H.hDeath))
+					{
+						Gn.sgMat[i][j] = 1;
+					}
+					else
+					{
+						Gn.sgMat[i][j] = 0;
+					}
+				}
+			}
+		}
+	}
+
+	void NeighborhoodLocal2(sg::GridMode Mode, int x, int y, int NeighLocal[2][6])
+	{
+		int i;
+		//x = x + 1;
+		//y = y + 1;
+		switch (Mode.Mode0)
+		{
+			case sgMode0:
+			{
+				switch (Mode.Mode1)
+				{
+					case sgMode0:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x - 1 - sgParity(y + 1);
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1 - sgParity(y + 1);
+						NeighLocal[1][i - 1] = y-1;
+						i = 3;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y - 2;
+						i = 4;
+						NeighLocal[0][i - 1] = x +1 + sgParity(y);
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1 + sgParity(y);
+						NeighLocal[1][i - 1] = y+1;
+						i = 6;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y + 2;
+						break;
+					}
+					case sgMode1:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y;
+						i = 3;
+						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[1][i - 1] = y - 1;
+						i = 4;
+						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y;
+						i = 6;
+						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[1][i - 1] = y + 1;
+						break;
+					}
+				}
+				break;
+			}
+			case sgMode1:
+			{
+				switch (Mode.Mode1)
+				{
+					case sgMode0:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y + sgParity(x);
+						i = 3;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						i = 4;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						i = 6;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y + sgParity(x);
+						break;
+					}
+					case sgMode1:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						i = 3;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y - sgParity(x);
+						i = 4;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y - sgParity(x);
+						i = 6;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						break;
+					}
+				}
+				break;
+			}
+		}
+	}
+
+#pragma endregion
+
+#pragma region Test_Neigh_3
+
+	void NextStep3(sg::GridMode Mode, Grid G, Grid Gn, Rules H)
+	{
+		int i, j;
+		int sumGrid = 0;
+		int sumGrid2 = 0;
+		int sumGrid3 = 0;
+		int NeighLocal[2][6] = { 0 };
+		int NeighData[1][6] = { 0 };
+		int NeighLocal2[2][6] = { 0 };
+		int NeighData2[1][6] = { 0 };
+		int NeighLocal3[2][6] = { 0 };
+		int NeighData3[1][6] = { 0 };
+
+		for (i = 0; i < G.sgRow; i++) for (j = 0; j < G.sgCol; j++)
+		{
+			NeighborhoodLocal(Mode, i, j, NeighLocal);
+			NeighborhoodLocal2(Mode, i, j, NeighLocal2);
+			NeighborhoodLocal3(Mode, i, j, NeighLocal3);
+			NeighborhoodData(G, NeighLocal, NeighData);
+			NeighborhoodData(G, NeighLocal2, NeighData2);
+			NeighborhoodData(G, NeighLocal3, NeighData3);
+			
+			sumGrid = sgSum6(NeighData);
+			sumGrid2 = sgSum6(NeighData2);
+			sumGrid3 = sgSum6(NeighData3);
+			//if (i == 0 && j == 0)cout << sumGrid << endl;
+			if (G.sgMat[i][j] == 1)
+			{
+				//36 13
+				if (sgIsSub(sumGrid + sumGrid2 + sumGrid3, H.hExist))
+				{
+					Gn.sgMat[i][j] = 1;
+				}
+				else
+				{
+					Gn.sgMat[i][j] = 0;
+				}
+			}
+			else if (G.sgMat[i][j] == 0)
+			{
+				//1235 132
+				if (sgIsSub(sumGrid + sumGrid2 + sumGrid3, H.hDeath))
+				{
+					Gn.sgMat[i][j] = 1; 
+				}
+				else
+				{
+					Gn.sgMat[i][j] = 0;
+				}
+			}
+		}
+	}
+
+	void NeighborhoodLocal3(sg::GridMode Mode, int x, int y, int NeighLocal[2][6])
+	{
+		int i;
+		//x = x + 1;
+		//y = y + 1;
+		switch (Mode.Mode0)
+		{
+			case sgMode0:
+			{
+				switch (Mode.Mode1)
+				{
+					case sgMode0:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x - 1;// -sgParity(y + 1);
+						NeighLocal[1][i - 1] = y + 2;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 2;// -sgParity(y + 1);
+						NeighLocal[1][i - 1] = y;
+						i = 3;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y - 2;
+						i = 4;
+						NeighLocal[0][i - 1] = x + 1;// +sgParity(y);
+						NeighLocal[1][i - 1] = y - 2;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 2;// +sgParity(y);
+						NeighLocal[1][i - 1] = y;
+						i = 6;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y + 2;
+						break;
+					}
+					case sgMode1:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y;
+						i = 3;
+						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[1][i - 1] = y - 1;
+						i = 4;
+						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y;
+						i = 6;
+						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[1][i - 1] = y + 1;
+						break;
+					}
+				}
+				break;
+			}
+			case sgMode1:
+			{
+				switch (Mode.Mode1)
+				{
+					case sgMode0:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y + sgParity(x);
+						i = 3;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						i = 4;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						i = 6;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y + sgParity(x);
+						break;
+					}
+					case sgMode1:
+					{
+						i = 1;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y + 1;
+						i = 2;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						i = 3;
+						NeighLocal[0][i - 1] = x - 1;
+						NeighLocal[1][i - 1] = y - sgParity(x);
+						i = 4;
+						NeighLocal[0][i - 1] = x;
+						NeighLocal[1][i - 1] = y - 1;
+						i = 5;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y - sgParity(x);
+						i = 6;
+						NeighLocal[0][i - 1] = x + 1;
+						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						break;
+					}
+				}
+				break;
+			}
+		}
+	}
+
+#pragma endregion
+
+#pragma region sgWindowsSet
 	BOOL CALLBACK EnumWindowsProc_0(HWND hWnd, LPARAM IProgress)
 	{
 		if (::FindWindowEx(hWnd, NULL, "SHELLDLL_DefView", NULL) != NULL)
@@ -630,11 +946,11 @@ namespace sg
 		}
 	}
 
-	void sgInitializationWindows(char fGrid[],char fBar[],char fCon[])
+	void sgInitializationWindows(char fGrid[], char fBar[], char fCon[])
 	{
-		HWND h_FormGrid = ::FindWindow(NULL,fGrid);
-		HWND h_FormBar = ::FindWindow(NULL,fBar);
-		HWND h_FormCon = ::FindWindow(NULL,fCon);
+		HWND h_FormGrid = ::FindWindow(NULL, fGrid);
+		HWND h_FormBar = ::FindWindow(NULL, fBar);
+		HWND h_FormCon = ::FindWindow(NULL, fCon);
 		RECT rctGrid;
 		RECT rctBar;
 		RECT rctCon;
@@ -652,14 +968,17 @@ namespace sg
 		if (h_FormCon != NULL)
 		{
 			GetWindowRect(h_FormCon, &rctCon);
-			MoveWindow(h_FormCon, rctGrid.right + 10, rctBar.bottom, 600, rctCon.bottom- rctCon.top, true);
+			MoveWindow(h_FormCon, rctGrid.right + 10, rctBar.bottom, 600, rctCon.bottom - rctCon.top, true);
 		}
 	}
+
 	void sgGetExePath(char In[260])
 	{
 		//char conPath[MAX_PATH];
 		GetModuleFileName(NULL, (LPSTR) In, 260);
 	}
+#pragma endregion
+
 }
 
 /*
