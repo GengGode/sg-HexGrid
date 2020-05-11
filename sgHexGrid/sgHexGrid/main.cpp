@@ -42,8 +42,8 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	{
 	case EVENT_MOUSEMOVE:
 	{
-		m = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		n = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		m = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (hexType.r + hexType.w));
+		n = sgCeil(y * 2 / 3 / (hexType.r + hexType.w));
 		q = m;
 		r = n;
 		p = m;
@@ -87,39 +87,40 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 				}
 			}
 		}
+
+		if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
+		{
+			sg::GridImg(mat, m, n,hexType, Scalar(255, 255, 0));
+		}
 		if (B >= 2)for (int i = 0; i < 6; i++)
 		{
 			m = Nei[0][i];
 			n = Nei[1][i];
 			if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
-				sg::GridImg(mat, m, n, Scalar(255, 255, 0));
+				sg::GridImg(mat, m, n, hexType, Scalar(255, 255, 0));
 			if (B >= 3)
 			{
 				m = Nei2[0][i];
 				n = Nei2[1][i];
 				if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
-					sg::GridImg(mat, m, n, Scalar(255, 255, 0));
+					sg::GridImg(mat, m, n, hexType, Scalar(255, 255, 0));
 				if (B >= 4)
 				{
 					m = Nei3[0][i];
 					n = Nei3[1][i];
 					if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
-						sg::GridImg(mat, m, n, Scalar(255, 255, 0));
+						sg::GridImg(mat, m, n, hexType, Scalar(255, 255, 0));
 				}
 			}
 		}
-		if (m  >= 0 && m  < grid.sgRow && n >= 0 && n < grid.sgCol)
-		{
-			sg::GridImg(mat, m , n, Scalar(255, 255, 0));
-			imshow(FormGrid, mat);
-		}
+		imshow(FormGrid, mat);
 	}
 	break;
 	case EVENT_LBUTTONDOWN:
 	{
 		DrawLFlag = true;
-		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		r = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (hexType.r + hexType.w));
+		r = sgCeil(y * 2 / 3 / (hexType.r + hexType.w));
 
 		NeighborhoodLocal(MODE,q, r, Nei);
 		NeighborhoodLocal2(MODE, q, r, Nei2);
@@ -149,8 +150,8 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_RBUTTONDOWN:
 	{
 		DrawRFlag = true;
-		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (DEFAULT_R + DEFAULT_LINEWIDTH));
-		s = sgCeil(y * 2 / 3 / (DEFAULT_R + DEFAULT_LINEWIDTH));
+		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (hexType.r + hexType.w));
+		s = sgCeil(y * 2 / 3 / (hexType.r + hexType.w));
 
 		NeighborhoodLocal(MODE,p, s, Nei);
 		NeighborhoodLocal2(MODE, p, s, Nei2);
@@ -315,7 +316,7 @@ int main()
 	//½øÈë»æÍ¼
 	while(1)
 	{
-		GridShow(Img, G);
+		GridShow(Img, G, hexType);
 		Img.copyTo(tempImg);
 		imshow(FormGrid, tempImg);
 		
@@ -377,7 +378,7 @@ int main()
 				NextStep3(Mode, G, Gnext, hR);
 				reG(G, Gnext);
 
-				GridShow(Img, G);
+				GridShow(Img, G,hexType);
 				Img.copyTo(tempImg);
 				imshow(FormGrid, tempImg);
 

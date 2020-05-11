@@ -370,8 +370,10 @@ namespace sg
 	//void GridCreate(int row, int col, Grid G);
 	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth);
 	void GridImg(Mat Img, int p, int q, Scalar C);
+	void GridImg(Mat Img, int p, int q, HexType hex, Scalar C);
 
 	void GridShow(Mat Img, Grid Data);
+	void GridShow(Mat Img, Grid Data, HexType hex);
 
 	void sgGridSet6Point(Grid G, int In[2][6], int Stata);
 

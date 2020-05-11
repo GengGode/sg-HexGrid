@@ -349,3 +349,6 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 *.psd
+/sgHexGrid/sgHexGrid/Save/1024px.ai
+/sgHexGrid/sgHexGrid/Save/1024px_画板 1.png
+/sgHexGrid/sgHexGrid/Save/MainForm.rp

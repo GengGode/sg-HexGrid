@@ -402,6 +402,8 @@ namespace sg
 		}
 	}
 
+
+
 	void GridImg(Mat Img, int p, int q, Scalar C)
 	{
 		double dx = DEFAULT_R, dy = DEFAULT_R;
@@ -426,6 +428,30 @@ namespace sg
 			fillPoly(Img, pp, np, 1, C,LINE_AA);
 	}
 
+	void GridImg(Mat Img, int p, int q, HexType hex, Scalar C)
+	{
+		double dx = hex.r, dy = hex.r;
+		Point point[1][6];
+		int np[] = { 6 };
+		double grid[2][6];
+		const Point* pp[1] = { point[0] };
+
+		SixGrid(grid, p, q, hex.r, hex.w);
+
+		for (int k = 0; k < 6; k++)
+		{
+			point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
+			//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
+		}
+		if (hex.r <= 1)
+			//Img.at(point[0][1]) = C;
+			//if (point[0][0].x >= 0 && point[0][0].x <= Img.rows&&point[0][0].y >= 0 && point[0][0].y <= Img.cols)
+			//Img.at<Vec3b>(point[0][0].x, point[0][0].y) = Vec3b(0,0,0); //= C;
+			circle(Img, point[0][0], 2, C, -1);
+		else
+			fillPoly(Img, pp, np, 1, C, LINE_AA);
+	}
+
 	void GridShow(Mat Img, Grid Data)
 	{
 		int i, j;
@@ -441,6 +467,26 @@ namespace sg
 				else if (Data.sgMat[i][j] == 1)
 				{
 					GridImg(Img, i, j, Scalar(0, 0, 0));
+				}
+
+			}
+		}
+	}
+	void GridShow(Mat Img, Grid Data,HexType hex)
+	{
+		int i, j;
+
+		for (i = 0; i < Data.sgRow; i++)
+		{
+			for (j = 0; j < Data.sgCol; j++)
+			{
+				if (Data.sgMat[i][j] == 0)
+				{
+					GridImg(Img, i, j, hex,Scalar(255, 255, 255));
+				}
+				else if (Data.sgMat[i][j] == 1)
+				{
+					GridImg(Img, i, j,hex, Scalar(0, 0, 0));
 				}
 
 			}
