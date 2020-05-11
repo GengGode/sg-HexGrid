@@ -1,3 +1,5 @@
+#pragma once
+#include<iostream>
 #include<Windows.h>
 #include<opencv2/opencv.hpp>
 using namespace cv;
@@ -6,8 +8,9 @@ using namespace std;
 #ifndef SIXGRID_H
 #define SIXGRID_H
 
-#define DEFAULT_R 4.2  //3.6
-#define DEFAULT_LINEWIDTH 1.2  //1.8
+#define DEFAULT_R 4.8  //3.6
+#define DEFAULT_LINEWIDTH 1.8 //1.8
+
 
 namespace sg
 {
@@ -15,6 +18,39 @@ namespace sg
 	{
 		sgMode0=0,
 		sgMode1=1
+	};
+
+	struct WheelStep
+	{
+		double step;
+		WheelStep(){ step = 0.2; }
+		WheelStep(double i) { i > 0 ? step = i : step = 0.2; }
+		WheelStep operator+(int& In)
+		{
+			WheelStep Out;
+			Out.step = this->step + In;
+			return Out;
+		}
+		WheelStep operator-(int& In)
+		{
+			WheelStep Out;
+			Out.step = this->step - In;
+			if (Out.step <= 0) Out.step = 0.2;
+			return Out;
+		}
+	};
+
+	struct HexType
+	{
+		double r;
+		double w;
+		HexType() { r = 4.8; w = 1.8; }
+		HexType(double r_,double w_) 
+		{
+			r_ > 0 ? r = r_ : r = 4.8;
+			w_ > 0 ? w = w_ : w = 1.8;
+		}
+
 	};
 
 	struct GridMode
@@ -54,7 +90,7 @@ namespace sg
 				}
 			}
 		}
-		Grid(int sgRow_, int sgCol_) :sgRow(sgRow_),sgCol(sgCol_) {
+		Grid(int sgRow_, int sgCol_) :sgRow(sgRow_), sgCol(sgCol_) {
 			sgMat = new int*[sgRow_];
 			for (int i = 0; i < sgRow_; i++)
 			{
@@ -301,6 +337,8 @@ namespace sg
 	};
 	
 	Offset sgOffsettoCube(Cube cube);
+
+
 
 	int sgCeil(double In);
 

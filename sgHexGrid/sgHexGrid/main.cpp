@@ -14,8 +14,11 @@ int p = 1;
 int s = 1;
 bool DrawLFlag = false;
 bool DrawRFlag = false;
+bool DrawMFlag = false;
 char FormGrid[] = "Form Grid";
 GridMode MODE;
+HexType hexType(4.8, 1.8);
+WheelStep STEP(0.2);
 
 void on_MouseHandle(int event, int x, int y, int flags, void* param)
 {
@@ -32,6 +35,8 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	int m=0, n=0;
 	int tm = 0, tn = 0;
 	int tm2 = 0, tn2 = 0;
+
+	//double MouseWheelStep = 0.2; 
 
 	switch (event)
 	{
@@ -170,6 +175,38 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_RBUTTONUP:
 	{
 		DrawRFlag = false;
+	}
+	break;
+	case EVENT_MBUTTONDOWN:
+	{
+		DrawMFlag = true;
+	}
+	break;
+	case EVENT_MBUTTONUP:
+	{
+		DrawMFlag = false;
+	}
+	break;
+	case EVENT_MOUSEWHEEL:
+	{
+		int value = getMouseWheelDelta(flags);
+		
+		if (value > 0)
+		{
+			hexType.r = hexType.r + STEP.step;
+			//DEFAULT_R = DEFAULT_R + STEP.step;
+			if (hexType.r <= 4.8)hexType.w = hexType.r * 0.4; else hexType.w = 2;
+		}
+		else if (value < 0)
+		{
+			//DEFAULT_R = DEFAULT_R - STEP.step;
+			//if (DEFAULT_R <= 0)DEFAULT_R = 0.2;
+			//if (DEFAULT_R <= 4.8)DEFAULT_LINEWIDTH = DEFAULT_R * 0.375;
+			hexType.r = hexType.r - STEP.step;
+			if (hexType.r <= 4.8)hexType.w = hexType.r * 0.4; else hexType.w = 2;
+			imshow(FormGrid, mat);
+		}
+		cout << hexType.r << " " << hexType.w << endl;
 	}
 	break;
 	}

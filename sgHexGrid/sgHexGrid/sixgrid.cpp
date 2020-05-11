@@ -2,6 +2,9 @@
 
 namespace sg
 {
+	//double DEFAULT_R = 4.8;  //3.6
+	//double DEFAULT_LINEWIDTH = 1.8; //1.8
+
 
 	Offset sgOffsettoCube(Cube cube)
 	{
@@ -420,7 +423,7 @@ namespace sg
 			//Img.at<Vec3b>(point[0][0].x, point[0][0].y) = Vec3b(0,0,0); //= C;
 			circle(Img, point[0][0], 2, C, -1);
 		else
-			fillPoly(Img, pp, np, 1, C, 1);
+			fillPoly(Img, pp, np, 1, C,LINE_AA);
 	}
 
 	void GridShow(Mat Img, Grid Data)
