@@ -300,6 +300,7 @@ namespace sg
 
 	}
 
+	//houD
 	void NextStep(sg::GridMode Mode, Grid G, Grid Gn)
 	{
 		int i, j;
@@ -342,6 +343,7 @@ namespace sg
 			}
 		}
 	}
+	//houD
 	void NextStep(sg::GridMode Mode, Grid G, Grid Gn, Rules H)
 	{
 		int i, j;
@@ -401,8 +403,28 @@ namespace sg
 			In[1][k] = dy + r * sinTheta[k];
 		}
 	}
+	//qianD
+	void SixGrid(double In[2][6], Shifting shi ,int m, int n, double r, double lineWidth)
+	{
+		double pi = 3.1415, root3 = 1.7321*(r + lineWidth);
+		double theta0 = 0.5236;
+		double theta[6] = { 0, 1.0471, 2.0943, 3.1415, 4.1887, 5.2359 };
+		double cosTheta[6] = { 0.8660,0,-0.8660,-0.8660,0,0.8660 };
+		double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
+		double dx, dy;
 
-	void GridImg(Mat Img, int p, int q, HexType hex, Scalar C)
+		n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
+		dy = (r + lineWidth) * n * 3 / 2;
+		dx += shi.x;
+		dy += shi.y;
+		for (int k = 0; k < 6; k++)
+		{
+			In[0][k] = dx + r * cosTheta[k];
+			In[1][k] = dy + r * sinTheta[k];
+		}
+	}
+	//qianD
+	void GridImg(Mat Img, int p, int q, Shifting shi,HexType hex, Scalar C)
 	{
 		double dx = hex.r, dy = hex.r;
 		Point point[1][6];
@@ -410,7 +432,7 @@ namespace sg
 		double grid[2][6];
 		const Point* pp[1] = { point[0] };
 
-		SixGrid(grid, p, q, hex.r, hex.w);
+		SixGrid(grid, shi,p, q, hex.r, hex.w);
 
 		for (int k = 0; k < 6; k++)
 		{
@@ -427,7 +449,7 @@ namespace sg
 
 	}
 
-	void GridShow(Mat Img, Grid Data,HexType hex)
+	void GridShow(Mat Img, Grid Data,HexType hex, Shifting shi)
 	{
 		int i, j;
 		Img = Scalar(128,128,128);
@@ -437,11 +459,11 @@ namespace sg
 			{
 				if (Data.sgMat[i][j] == 0)
 				{
-					GridImg(Img, i, j, hex,Scalar(255, 255, 255));
+					GridImg(Img, i, j, shi, hex, Scalar(255, 255, 255));
 				}
 				else if (Data.sgMat[i][j] == 1)
 				{
-					GridImg(Img, i, j,hex, Scalar(0, 0, 0));
+					GridImg(Img, i, j, shi, hex, Scalar(0, 0, 0));
 				}
 
 			}

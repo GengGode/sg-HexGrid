@@ -14,10 +14,12 @@ int p = 1;
 int s = 1;
 bool DrawLFlag = false;
 bool DrawRFlag = false;
+bool DrawBFlag = false;
 bool DrawMFlag = false;
 char FormGrid[] = "Form Grid";
 GridMode MODE;
 HexType hexType(4.8, 1.8);
+Shifting shi(0);
 WheelStep STEP(0.2);
 int MODER = 3;
 
@@ -37,14 +39,19 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	int tm = 0, tn = 0;
 	int tm2 = 0, tn2 = 0;
 
+	int tx = 0, ty = 0;
+
 	//double MouseWheelStep = 0.2; 
 
 	switch (event)
 	{
 	case EVENT_MOUSEMOVE:
 	{
-		m = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (hexType.r + hexType.w));
-		n = sgCeil(y * 2 / 3 / (hexType.r + hexType.w));
+		
+		tx =  x-shi.x;
+		ty =  y-shi.y;
+		m = sgCeil((sqrt(3) / 3 * tx - 1 / 3 * ty) / (hexType.r + hexType.w));
+		n = sgCeil(ty * 2 / 3 / (hexType.r + hexType.w));
 		q = m;
 		r = n;
 		p = m;
@@ -88,29 +95,36 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 				}
 			}
 		}
+		if (DrawMFlag)
+		{
+			shi.x = x - shi.tx;
+			shi.y = y - shi.ty;
+			//cout << shi.x << " ||| " << shi.y<<endl;
+		}
+		
 
 		if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
 		{
-			sg::GridImg(mat, m, n,hexType, Scalar(255, 255, 0));
+			sg::GridImg(mat, m, n,shi,hexType, Scalar(255, 255, 0));
 		}
 		if (B >= 2)for (int i = 0; i < 6; i++)
 		{
 			m = Nei[0][i];
 			n = Nei[1][i];
 			if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
-				sg::GridImg(mat, m, n, hexType, Scalar(255, 255, 0));
+				sg::GridImg(mat, m, n, shi, hexType, Scalar(255, 255, 0));
 			if (B >= 3)
 			{
 				m = Nei2[0][i];
 				n = Nei2[1][i];
 				if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
-					sg::GridImg(mat, m, n, hexType, Scalar(255, 255, 0));
+					sg::GridImg(mat, m, n, shi, hexType, Scalar(255, 255, 0));
 				if (B >= 4)
 				{
 					m = Nei3[0][i];
 					n = Nei3[1][i];
 					if (m >= 0 && m < grid.sgRow && n >= 0 && n < grid.sgCol)
-						sg::GridImg(mat, m, n, hexType, Scalar(255, 255, 0));
+						sg::GridImg(mat, m, n, shi, hexType, Scalar(255, 255, 0));
 				}
 			}
 		}
@@ -120,8 +134,10 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_LBUTTONDOWN:
 	{
 		DrawLFlag = true;
-		q = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (hexType.r + hexType.w));
-		r = sgCeil(y * 2 / 3 / (hexType.r + hexType.w));
+		tx = x - shi.x;
+		ty = y - shi.y;
+		q = sgCeil((sqrt(3) / 3 * tx - 1 / 3 * ty) / (hexType.r + hexType.w));
+		r = sgCeil(ty * 2 / 3 / (hexType.r + hexType.w));
 
 		NeighborhoodLocal(MODE,q, r, Nei);
 		NeighborhoodLocal2(MODE, q, r, Nei2);
@@ -151,8 +167,10 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_RBUTTONDOWN:
 	{
 		DrawRFlag = true;
-		p = sgCeil((sqrt(3) / 3 * x - 1 / 3 * y) / (hexType.r + hexType.w));
-		s = sgCeil(y * 2 / 3 / (hexType.r + hexType.w));
+		tx = x - shi.x;
+		ty = y - shi.y;
+		p = sgCeil((sqrt(3) / 3 * tx - 1 / 3 * ty) / (hexType.r + hexType.w));
+		s = sgCeil(ty * 2 / 3 / (hexType.r + hexType.w));
 
 		NeighborhoodLocal(MODE,p, s, Nei);
 		NeighborhoodLocal2(MODE, p, s, Nei2);
@@ -182,6 +200,9 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_MBUTTONDOWN:
 	{
 		DrawMFlag = true;
+		shi.tx = x;
+		shi.ty = y;
+		//cout << shi.tx << " ||| " << shi.ty << endl;
 	}
 	break;
 	case EVENT_MBUTTONUP:
@@ -320,7 +341,7 @@ int main()
 	//½øÈë»æÍ¼
 	while(1)
 	{
-		GridShow(Img, G, hexType);
+		GridShow(Img, G, hexType, shi);
 		Img.copyTo(tempImg);
 		imshow(FormGrid, tempImg);
 		
@@ -382,7 +403,7 @@ int main()
 				}
 				reG(G, Gnext);
 
-				GridShow(Img, G,hexType);
+				GridShow(Img, G,hexType, shi);
 				Img.copyTo(tempImg);
 				imshow(FormGrid, tempImg);
 

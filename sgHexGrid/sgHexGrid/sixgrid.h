@@ -164,7 +164,18 @@ namespace sg
 		Rules(Rule hExist_,Rule hDeath_):hExist(hExist_), hDeath(hDeath_) {}
 	};
 
-	
+	struct Shifting
+	{
+		int x;
+		int y;
+		int tx;
+		int ty;
+
+		Shifting() {}
+		Shifting(int x_) :Shifting(x_, x_) {}
+		Shifting(int x_,int y_):Shifting(x_, y_,0,0) {}
+		Shifting(int x_, int y_, int tx_, int ty_) :x(x_), y(y_), tx(tx_), ty(ty_) {}
+	};
 	struct Offset
 	{
 		int col;
@@ -176,10 +187,7 @@ namespace sg
 			mode.Mode1 = sgMode0;
 		}
 		Offset(int col_, int row_, GridMode mode_):col(col_), row(row_),mode(mode_) {}
-		Offset(int col_, int row_, SixGridMode mode0_) :col(col_), row(row_) {
-			mode.Mode0 = mode0_;
-			mode.Mode1 = mode0_;
-		}
+		Offset(int col_, int row_, SixGridMode mode0_) :Offset(col_, row_, mode0_, mode0_) {}
 		Offset(int col_, int row_, SixGridMode mode0_, SixGridMode mode1_) :col(col_), row(row_) {
 			mode.Mode0 = mode0_;
 			mode.Mode1 = mode1_;
@@ -366,11 +374,13 @@ namespace sg
 	Grid GridCreate(int row, int col);
 	//void GridCreate(int row, int col, Grid G);
 	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth);
+	void SixGrid(double In[2][6], Shifting shi, int m, int n, double r, double lineWidth);
+
 	//void GridImg(Mat Img, int p, int q, Scalar C);
-	void GridImg(Mat Img, int p, int q, HexType hex, Scalar C);
+	void GridImg(Mat Img, int p, int q, Shifting shi, HexType hex, Scalar C);
 
 	//void GridShow(Mat Img, Grid Data);
-	void GridShow(Mat Img, Grid Data, HexType hex);
+	void GridShow(Mat Img, Grid Data, HexType hex, Shifting shi);
 
 	void sgGridSet6Point(Grid G, int In[2][6], int Stata);
 
