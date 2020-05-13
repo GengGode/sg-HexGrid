@@ -128,17 +128,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Axi.cpp" />
+    <ClCompile Include="BasePoint.cpp" />
+    <ClCompile Include="BasePointCenter.cpp" />
+    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Hex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Off.cpp" />
+    <ClCompile Include="Point2d.cpp" />
+    <ClCompile Include="PointCenter.cpp" />
+    <ClCompile Include="PointCorner.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Vec.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axi.h" />
+    <ClInclude Include="BasePoint.h" />
+    <ClInclude Include="BasePointCenter.h" />
+    <ClInclude Include="Cell.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Hex.h" />
     <ClInclude Include="Off.h" />
+    <ClInclude Include="Point2d.h" />
+    <ClInclude Include="PointCenter.h" />
+    <ClInclude Include="PointCorner.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
