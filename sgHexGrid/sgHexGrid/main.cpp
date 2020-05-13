@@ -200,8 +200,8 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	case EVENT_MBUTTONDOWN:
 	{
 		DrawMFlag = true;
-		shi.tx = x;
-		shi.ty = y;
+		shi.tx = -shi.x+x;
+		shi.ty = -shi.y+y;
 		//cout << shi.tx << " ||| " << shi.ty << endl;
 	}
 	break;
@@ -343,7 +343,16 @@ int main()
 	{
 		GridShow(Img, G, hexType, shi);
 		Img.copyTo(tempImg);
-		imshow(FormGrid, tempImg);
+		if (FindWindowA(NULL, FormGrid) == NULL)
+		{
+			//imshow(FormGrid, tempImg);
+			//setMouseCallback(FormGrid, on_MouseHandle, (void*) &GM);
+			return 0;
+		}
+		else
+			imshow(FormGrid, tempImg);
+
+		
 		
 		p += 1;
 		if (p >= 300)
@@ -405,7 +414,14 @@ int main()
 
 				GridShow(Img, G,hexType, shi);
 				Img.copyTo(tempImg);
-				imshow(FormGrid, tempImg);
+				if (FindWindowA(NULL, FormGrid) == NULL)
+				{
+					//imshow(FormGrid, tempImg);
+					//setMouseCallback(FormGrid, on_MouseHandle, (void*) &GM);
+					return 0;
+				}
+				else
+					imshow(FormGrid, tempImg);
 
 				p += 1;
 				if (p >= 300)
