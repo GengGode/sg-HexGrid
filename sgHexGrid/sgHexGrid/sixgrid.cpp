@@ -960,6 +960,7 @@ namespace sg
 
 	void SetDesktop(char FormName[])
 	{
+		setWindowProperty(FormName, CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
 		HWND hWnd = ::FindWindow("Progman", NULL);
 		HWND my_hWnd = ::FindWindow(NULL, FormName);
 

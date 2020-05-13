@@ -276,41 +276,12 @@ int main()
 	Mat bar(100, 300, CV_8UC3, Scalar(0, 0, 0));
 	GridImage GM(G, Img);
 
+
 	imshow(FormGrid, Img);
+	//SetDesktop(FormGrid);
+
 	//鼠标事件
 	setMouseCallback(FormGrid, on_MouseHandle, (void*)&GM);
-
-	
-	//{
-	//	Grid TestG(10);
-	//	Mat TestImg(sgMaxRow(TestG), sgMaxCol(TestG), CV_8UC3, Scalar(128, 128, 128));
-	//	GridImage TestGM(TestG, TestImg);
-
-	//	double dx = 5, dy = 1;
-	//	Point point[1][6];
-	//	int np[] = { 6 };
-	//	double grid[2][6];
-	//	const Point* pp[1] = { point[0] };
-
-	//	SixGrid(grid, 5, 5, dx,dy);
-
-	//	for (int k = 0; k < 6; k++)
-	//	{
-	//		point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
-	//		cout << " " << point[0][k] << " " << grid[0][k] << " " << grid[1][k] <<" " << dx << " " << dy<< endl;
-	//		//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
-	//	}
-	//	fillPoly(TestImg, pp, np, 1, Scalar(255,255,255), 1);
-	//	SixGrid(grid, 6, 5, dx, dy);
-
-	//	for (int k = 0; k < 6; k++)
-	//	{
-	//		//point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
-	//		point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
-	//	}
-	//	fillPoly(TestImg, pp, np, 1, Scalar(255, 255, 255), 1);
-	//	imshow("Test", TestImg);
-	//}
 
 	//存活率显示条绘制
 	for (i = 0; i < 300; i++)
