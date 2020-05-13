@@ -402,32 +402,6 @@ namespace sg
 		}
 	}
 
-
-
-	void GridImg(Mat Img, int p, int q, Scalar C)
-	{
-		double dx = DEFAULT_R, dy = DEFAULT_R;
-		Point point[1][6];
-		int np[] = { 6 };
-		double grid[2][6];
-		const Point* pp[1] = { point[0] };
-
-		SixGrid(grid, p, q, DEFAULT_R, DEFAULT_LINEWIDTH);
-
-		for (int k = 0; k < 6; k++)
-		{
-			point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
-			//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
-		}
-		if (DEFAULT_R <= 1)
-			//Img.at(point[0][1]) = C;
-			//if (point[0][0].x >= 0 && point[0][0].x <= Img.rows&&point[0][0].y >= 0 && point[0][0].y <= Img.cols)
-			//Img.at<Vec3b>(point[0][0].x, point[0][0].y) = Vec3b(0,0,0); //= C;
-			circle(Img, point[0][0], 2, C, -1);
-		else
-			fillPoly(Img, pp, np, 1, C,LINE_AA);
-	}
-
 	void GridImg(Mat Img, int p, int q, HexType hex, Scalar C)
 	{
 		double dx = hex.r, dy = hex.r;
@@ -444,38 +418,19 @@ namespace sg
 			//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
 		}
 		if (hex.r <= 1)
-			//Img.at(point[0][1]) = C;
-			//if (point[0][0].x >= 0 && point[0][0].x <= Img.rows&&point[0][0].y >= 0 && point[0][0].y <= Img.cols)
-			//Img.at<Vec3b>(point[0][0].x, point[0][0].y) = Vec3b(0,0,0); //= C;
 			circle(Img, point[0][0], 2, C, -1);
 		else
-			fillPoly(Img, pp, np, 1, C, LINE_AA);
-	}
-
-	void GridShow(Mat Img, Grid Data)
-	{
-		int i, j;
-
-		for (i = 0; i < Data.sgRow; i++)
 		{
-			for (j = 0; j < Data.sgCol; j++)
-			{
-				if (Data.sgMat[i][j] == 0)
-				{
-					GridImg(Img, i, j, Scalar(255, 255, 255));
-				}
-				else if (Data.sgMat[i][j] == 1)
-				{
-					GridImg(Img, i, j, Scalar(0, 0, 0));
-				}
-
-			}
+			fillConvexPoly(Img, *pp, *np, C,LINE_AA);
+			//polylines(Img, pp,np,1, 1, Scalar(128,128,128));
 		}
+
 	}
+
 	void GridShow(Mat Img, Grid Data,HexType hex)
 	{
 		int i, j;
-
+		Img = Scalar(128,128,128);
 		for (i = 0; i < Data.sgRow; i++)
 		{
 			for (j = 0; j < Data.sgCol; j++)

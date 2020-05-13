@@ -19,6 +19,7 @@ char FormGrid[] = "Form Grid";
 GridMode MODE;
 HexType hexType(4.8, 1.8);
 WheelStep STEP(0.2);
+int MODER = 3;
 
 void on_MouseHandle(int event, int x, int y, int flags, void* param)
 {
@@ -194,20 +195,21 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 		
 		if (value > 0)
 		{
-			hexType.r = hexType.r + STEP.step;
+			hexType.r = hexType.r*(1 + STEP.step);
 			//DEFAULT_R = DEFAULT_R + STEP.step;
-			if (hexType.r <= 4.8)hexType.w = hexType.r * 0.4; else hexType.w = 2;
+			if (hexType.r <= 4.8)hexType.w = hexType.r * 0.4; else hexType.w = 3;
 		}
 		else if (value < 0)
 		{
 			//DEFAULT_R = DEFAULT_R - STEP.step;
 			//if (DEFAULT_R <= 0)DEFAULT_R = 0.2;
 			//if (DEFAULT_R <= 4.8)DEFAULT_LINEWIDTH = DEFAULT_R * 0.375;
-			hexType.r = hexType.r - STEP.step;
-			if (hexType.r <= 4.8)hexType.w = hexType.r * 0.4; else hexType.w = 2;
+			hexType.r = hexType.r*(1 - STEP.step);
+			if (hexType.r <= 4.8)hexType.w = hexType.r * 0.4; else hexType.w = 3;
+			if (hexType.w <= 0.5)hexType.w = 0;
 			imshow(FormGrid, mat);
 		}
-		cout << hexType.r << " " << hexType.w << endl;
+		//cout << hexType.r << " " << hexType.w << endl;
 	}
 	break;
 	}
@@ -237,8 +239,10 @@ int main()
 	//snow:234_34 or 34_34
 	//45_56
 	//5678_67
-	int hExist[] = { 5,6,7,8};
-	int hDeath[] = { 6,7};//{4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
+	//int hExist[] = { 5,6,7,8};
+	//int hDeath[] = { 6,7};
+	int hExist[] = { 2,3,4 };
+	int hDeath[] = { 3,4 };
 	Rule hE(hExist, sizeof(hExist) / sizeof(hExist[0]));
 	Rule hD(hDeath, sizeof(hDeath) / sizeof(hDeath[0]));
 	//hE.out();
@@ -352,13 +356,6 @@ int main()
 
 		
 
-
-
-
-
-
-
-
 		//检测空格，进入步进循环
 		key = waitKey(10);
 		if (key == 32)
@@ -376,6 +373,13 @@ int main()
 				//NextStep(Mode, G, Gnext, h);
 				//NextStep2(Mode, G, Gnext, hR);
 				NextStep3(Mode, G, Gnext, hR);
+				switch (MODER)
+				{
+					case 1:NextStep(Mode, G, Gnext, hR); break;
+					case 2:NextStep2(Mode, G, Gnext, hR); break;
+					case 3:NextStep3(Mode, G, Gnext, hR); break;
+					default:NextStep(Mode, G, Gnext, hR); break;
+				}
 				reG(G, Gnext);
 
 				GridShow(Img, G,hexType);

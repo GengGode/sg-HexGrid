@@ -22,8 +22,8 @@ namespace sg
 
 	struct WheelStep
 	{
-		double step;
-		WheelStep(){ step = 0.2; }
+		double step=0.2;
+		WheelStep(){}
 		WheelStep(double i) { i > 0 ? step = i : step = 0.2; }
 		WheelStep operator+(int& In)
 		{
@@ -42,9 +42,9 @@ namespace sg
 
 	struct HexType
 	{
-		double r;
-		double w;
-		HexType() { r = 4.8; w = 1.8; }
+		double r=4.8;
+		double w=1.8;
+		HexType() { }
 		HexType(double r_,double w_) 
 		{
 			r_ > 0 ? r = r_ : r = 4.8;
@@ -55,12 +55,9 @@ namespace sg
 
 	struct GridMode
 	{
-		SixGridMode Mode0;
-		SixGridMode Mode1;
-		GridMode(){
-			Mode0 = sgMode0;
-			Mode1 = sgMode0;
-		}
+		SixGridMode Mode0= sgMode0;
+		SixGridMode Mode1= sgMode0;
+		GridMode(){}
 		GridMode(SixGridMode Mode0_) :Mode0(Mode0_), Mode1(Mode0_) {}
 		GridMode(SixGridMode Mode0_, SixGridMode Mode1_):Mode0(Mode0_), Mode1(Mode1_) {}
 		bool operator ==(const GridMode In)
@@ -75,8 +72,8 @@ namespace sg
 	struct Grid
 	{
 		//int sgDim;
-		int sgRow;
-		int sgCol;
+		int sgRow=0;
+		int sgCol=0;
 		int **sgMat;
 		Grid() {}
 		Grid(int len_) :sgRow(len_), sgCol(len_) {
@@ -369,10 +366,10 @@ namespace sg
 	Grid GridCreate(int row, int col);
 	//void GridCreate(int row, int col, Grid G);
 	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth);
-	void GridImg(Mat Img, int p, int q, Scalar C);
+	//void GridImg(Mat Img, int p, int q, Scalar C);
 	void GridImg(Mat Img, int p, int q, HexType hex, Scalar C);
 
-	void GridShow(Mat Img, Grid Data);
+	//void GridShow(Mat Img, Grid Data);
 	void GridShow(Mat Img, Grid Data, HexType hex);
 
 	void sgGridSet6Point(Grid G, int In[2][6], int Stata);
