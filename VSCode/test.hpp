@@ -80,3 +80,14 @@ class Hex
     
 
 };
+struct T
+{
+    int lis[20];
+    int count;
+    T(){}
+    T(int lis_[])
+    {
+        cout<<"T object."<<endl;
+        cout<<lis_<<endl;
+    }
+};

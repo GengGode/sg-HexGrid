@@ -54,6 +54,15 @@
     <ClCompile Include="PointCorner.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Rander.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Coor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hex.h">
@@ -92,5 +101,17 @@
     <ClInclude Include="PointCorner.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Rander.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Coor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

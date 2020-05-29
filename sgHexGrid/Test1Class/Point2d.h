@@ -7,6 +7,6 @@ public:
 	//double Abs();
 	BasePoint Corner();
 protected:
-	BasePoint 
+	//BasePoint 
 };
 

@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{3D6E3D69-2DF0-44A0-8E13-AC71C044A14F}</ProjectGuid>
-    <RootNamespace>Test1Class</RootNamespace>
+    <ProjectGuid>{E5D0868D-7D7E-4872-9F27-3E9F1F1A4269}</ProjectGuid>
+    <RootNamespace>Test2Class</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\opencv\OpenCV3.4.0\opencv\opencv\build\include;D:\opencv\OpenCV3.4.0\opencv\opencv\build\include\opencv;D:\opencv\OpenCV3.4.0\opencv\opencv\build\include\opencv2;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\opencv\OpenCV3.4.0\opencv\opencv\build\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>d:\opencv\OpenCV3.4.0\opencv\opencv\build\include\;d:\opencv\OpenCV3.4.0\opencv\opencv\build\include\opencv;d:\opencv\OpenCV3.4.0\opencv\opencv\build\include\opencv2;$(IncludePath)</IncludePath>
+    <LibraryPath>d:\opencv\OpenCV3.4.0\opencv\opencv\build\x64\vc15\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -127,39 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Axi.cpp" />
-    <ClCompile Include="BasePoint.cpp" />
-    <ClCompile Include="BasePointCenter.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Cell.cpp" />
-    <ClCompile Include="Coor.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="Hex.cpp" />
+    <ClCompile Include="DrawHex.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Off.cpp" />
-    <ClCompile Include="Point2d.cpp" />
-    <ClCompile Include="PointCenter.cpp" />
-    <ClCompile Include="PointCorner.cpp" />
-    <ClCompile Include="Rander.cpp" />
-    <ClCompile Include="Test.cpp" />
-    <ClCompile Include="Vec.cpp" />
+    <ClCompile Include="Render.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Axi.h" />
-    <ClInclude Include="BasePoint.h" />
-    <ClInclude Include="BasePointCenter.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Cell.h" />
-    <ClInclude Include="Coor.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="Hex.h" />
-    <ClInclude Include="Off.h" />
-    <ClInclude Include="Point2d.h" />
-    <ClInclude Include="PointCenter.h" />
-    <ClInclude Include="PointCorner.h" />
-    <ClInclude Include="Rander.h" />
-    <ClInclude Include="Test.h" />
-    <ClInclude Include="Vec.h" />
+    <ClInclude Include="DrawHex.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Render.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

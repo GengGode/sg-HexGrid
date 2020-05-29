@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Grid" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hex" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAgAEABgAAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coor" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GridMode" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAIAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rule" Collapsed="true">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Map" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAIAAAABAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blocks" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAgAAAAABIAAAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Block" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Mode" Collapsed="true">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEFgAAAAAAA=</HashCode>
+      <FileName>Grid.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

@@ -1,9 +1,12 @@
-//#include <opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
+#include<Windows.h>
 #include<iostream>
 using  namespace std;
-
+using namespace cv;
 #include"Cube.h"
 #include"Vec.h"
+
+#include"Rander.h"
 
 void Out(Hex hex)
 {
@@ -22,11 +25,16 @@ int main()
 	Out(h2);
 	Cube c2(h2);
 	Out(c2);
-	Out(h2 + h1);
-	Out(h2 - h1);
-	Out(h1 - h2);
-	Vec v1(1, 2);
-	Vec v2(v1);
+	//Hex h3 = h2 + h1;
+	//Out(h3);
+	//Out(h2 - h1);
+	//Out(h1 - h2);
+	//Vec v1(1, 2);
+	//Vec v2(v1);
+
+	char name[] = "img";
+	Rander rander;
+	rander.show(name);
 
 	system("pause");
 	return 0;
