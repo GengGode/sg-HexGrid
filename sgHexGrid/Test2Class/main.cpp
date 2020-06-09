@@ -3,7 +3,9 @@
 
 int main()
 {
+	Blocks b();
 
+	
 
 	return 0;
 }

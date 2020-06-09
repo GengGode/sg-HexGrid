@@ -239,7 +239,7 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 
 int main()
 {
-	int len =120;// 100;
+	int len =1000;// 100;
 	int time = 0, T = 200, i, j;
 	char key = '0';
 
@@ -444,7 +444,7 @@ int main()
 				else if (key == 'o')
 				{
 					key = '0';
-					cout << "Stata: Exist: " << s_c[p] << " %" << endl;
+					cout << "Stata: Exist: " << s_c[p] << " %" << " | Hex Show Size: " << hexType.r << " £¬" << hexType.w << endl;
 				}
 				
 			}
@@ -466,7 +466,7 @@ int main()
 		else if (key == 'o')
 		{
 			key = '0';
-			cout << "Stata: Exist: "<< s_c[p] <<" %"<< endl;
+			cout << "Stata: Exist: "<< s_c[p] <<" %"<< " | Hex Show Size: "<< hexType.r<<" £¬"<< hexType.w <<endl;
 		}
 		if (key == '+')
 		{
@@ -499,9 +499,9 @@ int main()
 			hR.hExist = hE;
 			hR.hDeath = hD;
 			//cout << "-----------------------------------------------------" << endl;
-			cout << "Input Rules Select no more than 7 numbers from 0 to 6" << endl;
+			cout << "Input Rules Select no more than 7 numbers from 0 to 10" << endl;
 			//cout << "-----------------------------------------------------" << endl;
-			tmpkey=getchar();
+			//tmpkey=getchar();
 			cin >> InE;
 			cin >> InD;
 			//cout << "-------------------- Input Over ---------------------" << endl;
@@ -515,15 +515,27 @@ int main()
 			{
 				//hE.lis = sgRuleInputLis(InE);
 				hE.count = sgRuleInputCount(InE);
+				hE.clear();
+				int* te = new int[hE.count];
+				te = sgRuleInputLis(InE);
 				//hD.lis = sgRuleInputLis(InD);
 				hD.count = sgRuleInputCount(InD);
+				hD.clear();
+				int* td = new int[hD.count];
+				td = sgRuleInputLis(InD);
 				cout << "Exist: " <<hE.count<< endl;
 				for (i = 0; i < hE.count; i++)
+				{
+					hE.lis[i] = te[i];
 					cout << "	" << hE.lis[i];
+				}
 				cout << endl;
 				cout << "Death: " << hD.count << endl;
 				for (i = 0; i < hD.count; i++)
+				{
+					hD.lis[i] = td[i];
 					cout << "	" << hD.lis[i];
+				}
 				cout << endl;
 				hR.hExist = hE;
 				hR.hDeath = hD;

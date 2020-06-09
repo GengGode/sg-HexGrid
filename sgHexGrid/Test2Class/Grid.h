@@ -1,25 +1,28 @@
 #pragma once
-class Grid
-{
-	//后台
-public:
-	
+#include<iostream>
+using namespace std;
 
-};
+//extern double xCos[] = { 0.866025, 0., -0.866025, -0.866025, 0., 0.866025 };
+//extern double xSin[] = { 0.5, 1., 0.5, -0.5, -1., -0.5 };
+//extern double yCos[] = { 1., 0.5, -0.5, -1., -0.5, 0.5 };
+//extern double ySin[] = { 0.,0.866025,0.866025,0.,-0.866025,-0.866025 };
+
+
 class Hex
 {
 	//六边形
 public:
 	Hex();
-	~Hex();
+	//~Hex();
+	Hex(double x_, double y_, double r_);
 private:
 	//Coor cen;//center
 	//Coor cor;//corner
 	/*/ 绘图坐标 /*/
-	double x;
-	double y;
+	double x,y;
+	//int x, y;
 	//Coor corner[];
-	double corner[2][6];//顶点组
+	//double corner[2][6];//顶点组
 
 
 };
@@ -44,58 +47,56 @@ class GridMode
 {
 	//网格参数
 public:
-	Mode u;
-	Mode v;
+	
 
 	GridMode();
 private:
-
+	Mode u;
+	Mode v;
 };
 
 class Rule
 {
-
+public:
+	Rule();
+private:
+	unsigned char *lis;
+	unsigned char count;
 };
-
-class Maps
+class Rules
 {
 public:
-	Maps();
-	~Maps();
-
+	Rules();
+	Rule exist() { return Exist; }
+	Rule death() { return Death; }
 private:
-	Map* map[];
+	Rule Exist;
+	Rule Death;
 };
-class Map
+class RanderMode
 {
-	//网格地图
 public:
-	Map();
-	~Map();
+	RanderMode();
 
 private:
-	//Blocks* pb;
-	Blocks blocks[255][255];
+	Coor coff;
+	double r;
+	double w;
+	double b;
+	double dr;
+	//double step;
 };
-
-class Blocks:Block
+class GridSet
 {
-	//单个区块
-	/*
-	unsigned char
-	*/
 public:
-	Blocks();
-	~Blocks();
+	GridSet();
 
 private:
-	//int u;
-	//int v;
-	//uv坐标
-	unsigned char u;
-	unsigned char v;
-	//Block block;
+	GridMode gm;
+	Rules gr;
+	RanderMode grm;
 };
+
 class Block
 {
 	//单个区块
@@ -103,14 +104,74 @@ class Block
 	unsigned char
 	*/
 public:
-	Block();
-	~Block();
+	bool randerflag[8][8];
 
+	Block();
+	//~Block();
+	Block(double r_);
+	Block(double u_, double v_, double r_);
 private:
 	//unsigned char i;
 	//unsigned char j;
-	Hex hex[255][255];
+	Hex hex[8][8];
 };
+class Blocks//:Block
+{
+	//单个区块
+	/*
+	unsigned char
+	*/
+public:
+	Blocks();
+	//~Blocks();
+	Blocks(unsigned char u_, unsigned char v_, double r_);
+private:
+	//int u;
+	//int v;
+	//uv坐标
+	unsigned char u;
+	unsigned char v;
+	Block block;
+};
+
+
+class Grid
+{
+	//后台
+public:
+	Grid();
+private:
+	GridSet gs;
+	Blocks bs;
+
+};
+
+//class Map
+//{
+//	//网格地图
+//public:
+//	Map();
+//	//~Map();
+//	Map(double r_);
+//	void out()
+//	{
+//		cout << sizeof(blocks)/sizeof(Block) << endl<<sizeof(Block) << endl;;
+//	}
+//private:
+//	//Blocks* pb;
+//	Blocks blocks[8][8];
+//};
+//class Maps
+//{
+//public:
+//	Maps();
+//	//~Maps();
+//
+//private:
+//	Map* map[10];
+//};
+
+
 //class HexGrid
 //{
 //public:

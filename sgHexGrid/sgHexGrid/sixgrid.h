@@ -74,27 +74,34 @@ namespace sg
 		//int sgDim;
 		int sgRow=0;
 		int sgCol=0;
-		int **sgMat;
+		unsigned char **sgMat;
+		bool **sgFlag;
 		Grid() {}
 		Grid(int len_) :sgRow(len_), sgCol(len_) {
-			sgMat = new int*[len_];
+			sgMat = new unsigned char*[len_];
+			sgFlag = new bool*[len_];
 			for (int i = 0; i < len_; i++)
 			{
-				sgMat[i] = new int[len_];
+				sgMat[i] = new unsigned char[len_];
+				sgFlag[i] = new bool[len_];
 				for (int j = 0; j < len_; j++)
 				{
 					sgMat[i][j] = 0;
+					sgFlag[i][j] = 0;
 				}
 			}
 		}
 		Grid(int sgRow_, int sgCol_) :sgRow(sgRow_), sgCol(sgCol_) {
-			sgMat = new int*[sgRow_];
+			sgMat = new unsigned char*[sgRow_];
+			sgFlag = new bool*[sgRow_];
 			for (int i = 0; i < sgRow_; i++)
 			{
-				sgMat[i] = new int[sgCol_];
+				sgMat[i] = new unsigned char[sgCol_];
+				sgFlag[i] = new bool[sgCol_];
 				for (int j = 0; j < sgCol_; j++)
 				{
 					sgMat[i][j] = 0;
+					sgFlag[i][j] = 0;
 				}
 			}
 		}
@@ -147,6 +154,11 @@ namespace sg
 			for (int i = 0; i < count; i++)
 				lis[i] = lis_[i];
 			//cout << lis << endl;
+		}
+		void clear()
+		{
+			lis = new int[count];
+			for (int i = 0; i < count; i++)lis[i] = 0;
 		}
 		void out()
 		{

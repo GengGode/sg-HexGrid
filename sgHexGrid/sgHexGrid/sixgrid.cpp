@@ -98,24 +98,32 @@ namespace sg
 	}
 	int sgCeil(double In)
 	{
-		int Out = (int) In;
-		//if (Out-In>=0.5)Out+=1;
-		if (In >= 0)
-		{
-			if (Out - In >= 0.5)Out += 1;
-		}
-		else
-		{
-			if (In - Out >= 0.5)Out -= 1;
-		}
-		return Out;
+		//int Out = (int) In;
+		////if (Out-In>=0.5)Out+=1;
+		//if (In >= 0)
+		//{
+		//	if (Out - In >= 0.5)Out += 1;
+		//}
+		//else
+		//{
+		//	if (In - Out >= 0.5)Out -= 1;
+		//}
+		//return Out;
+		return cvRound(In);
 	}
 
 	int sgParity(int In)
 	{
+		//input 1,3,5,7... output 0, and input 2,4,6,8... output 1.
 		int Out = 0;
 		In % 2 ? Out = 0 : Out = 1;
+		if (In % 2 == 1)Out = 0; else Out = 1;
 		return Out;
+	}
+	int sgOdd(int In)
+	{
+		//input 1,3,5,7... output 1, and input 2,4,6,8... output 0.
+		return In & 1;
 	}
 	int sgLogic(int In)
 	{
@@ -199,6 +207,8 @@ namespace sg
 				Out = maxPic[1][i];
 			}
 		}
+		if (Out > 900)
+			Out = 900;
 		return (int) (Out + 0.5);
 	}
 	int sgMaxCol(Grid In)
@@ -214,6 +224,8 @@ namespace sg
 				Out = maxPic[0][i];
 			}
 		}
+		if (Out > 900)
+			Out = 900;
 		return (int) (Out + 0.5);
 	}
 	int sgSumGrid(Grid In)
@@ -232,8 +244,10 @@ namespace sg
 		for (int i = 0; i < 10; i++)
 		{
 			Ini = In[i] - 48;
-			if (Ini >= 0 && Ini <= 6)
+			if (Ini >= 0 && Ini <= 9)
 				count += 1;
+			else
+				break;
 		}
 		if (count <= 0)
 			count = 1;
@@ -245,14 +259,17 @@ namespace sg
 		int Ini = 0;
 		int count = 0;
 		int Out[10] = { 0 };
+		
 		for (int i = 0; i < 10; i++)
 		{
 			Ini = In[i]-48;
-			if (Ini >= 0 && Ini <= 6)
+			if (Ini >= 0 && Ini <= 9)
 			{
 				Out[count] = Ini;
 				count += 1;
 			}
+			else
+				break;
 		}
 		
 		if (count <= 0)
@@ -287,14 +304,22 @@ namespace sg
 	void reG(Grid G, Grid Gn)
 	{
 		int TempMat;
+		bool TempFalg;
 		int i, j;
 		for (i = 0; i < G.sgRow; i++)
 		{
 			for (j = 0; j < G.sgCol; j++)
 			{
-				TempMat = G.sgMat[i][j];
-				G.sgMat[i][j] = Gn.sgMat[i][j];
-				Gn.sgMat[i][j] = TempMat;
+				if (G.sgMat[i][j] != Gn.sgMat[i][j])
+				{
+					TempMat = G.sgMat[i][j];
+					G.sgMat[i][j] = Gn.sgMat[i][j];
+					Gn.sgMat[i][j] = TempMat;
+					TempFalg = G.sgFlag[i][j];
+					G.sgFlag[i][j] = Gn.sgFlag[i][j];
+					Gn.sgFlag[i][j] = TempFalg;
+				}
+				
 			}
 		}
 
@@ -388,10 +413,10 @@ namespace sg
 	void SixGrid(double In[2][6], int m, int n, double r, double lineWidth)
 	{
 		double pi = 3.1415, root3 = 1.7321*(r + lineWidth);
-		double theta0 = 0.5236;
-		double theta[6] = { 0, 1.0471, 2.0943, 3.1415, 4.1887, 5.2359 };
-		double cosTheta[6] = { 0.8660,0,-0.8660,-0.8660,0,0.8660 };
-		double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
+		//double theta0 = 0.5236;
+		//double theta[6] = { 0, 1.0471, 2.0943, 3.1415, 4.1887, 5.2359 };
+		static double cosTheta[6] = { 0.8660,0,-0.8660,-0.8660,0,0.8660 };
+		static double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
 		double dx, dy;
 
 		n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
@@ -407,10 +432,10 @@ namespace sg
 	void SixGrid(double In[2][6], Shifting shi ,int m, int n, double r, double lineWidth)
 	{
 		double pi = 3.1415, root3 = 1.7321*(r + lineWidth);
-		double theta0 = 0.5236;
-		double theta[6] = { 0, 1.0471, 2.0943, 3.1415, 4.1887, 5.2359 };
-		double cosTheta[6] = { 0.8660,0,-0.8660,-0.8660,0,0.8660 };
-		double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
+		//double theta0 = 0.5236;
+		//double theta[6] = { 0, 1.0471, 2.0943, 3.1415, 4.1887, 5.2359 };
+		static double cosTheta[6] = { 0.8660,0,-0.8660,-0.8660,0,0.8660 };
+		static double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
 		double dx, dy;
 
 		n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
@@ -431,19 +456,38 @@ namespace sg
 		int np[] = { 6 };
 		double grid[2][6];
 		const Point* pp[1] = { point[0] };
-
+		int flag = 6;
+		
 		SixGrid(grid, shi,p, q, hex.r, hex.w);
 
 		for (int k = 0; k < 6; k++)
 		{
-			point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
+			point[0][k].x = sgCeil(grid[0][k] + dx);
+			point[0][k].y = sgCeil(grid[1][k] + dy);
+
+			//point[0][k] = Point(sgCeil(grid[0][k] + dx), sgCeil(grid[1][k] + dy));
 			//point[0][k] = Point(cvCeil(grid[0][k] + dx), cvCeil(grid[1][k] + dy));
+			if (point[0][k].x >= 0 && point[0][k].x <= Img.cols&&point[0][k].y >= 0 && point[0][k].y <= Img.rows)
+				flag -= 1;
 		}
-		if (hex.r <= 1)
-			circle(Img, point[0][0], 2, C, -1);
+		if (hex.r <= 0.5)
+		{
+			//if (Img.at<Vec3b>(point[0][0])[0]!=C[0])
+			//if (flag < 6)
+				circle(Img, point[0][0], 2, C, -1);
+		}
+		else if (hex.r < 1.2)
+		{
+			//if (flag < 6)
+				polylines(Img, pp, np, 1, 1, C);
+		}
 		else
 		{
-			fillConvexPoly(Img, *pp, *np, C,LINE_AA);
+			//fillConvexPoly(Img, *pp, *np, C,LINE_AA);
+			if (flag<6)
+				fillConvexPoly(Img, *pp, *np, C, LINE_AA);// , LINE_AA);
+				//polylines(Img, pp, np, 1, 1, C);// Scalar(128, 128, 128));
+
 			//polylines(Img, pp,np,1, 1, Scalar(128,128,128));
 		}
 
@@ -457,15 +501,17 @@ namespace sg
 		{
 			for (j = 0; j < Data.sgCol; j++)
 			{
-				if (Data.sgMat[i][j] == 0)
+				//if (Data.sgFlag[i][j] == 1)
 				{
-					GridImg(Img, i, j, shi, hex, Scalar(255, 255, 255));
+					if (Data.sgMat[i][j] == 0)
+					{
+						GridImg(Img, i, j, shi, hex, Scalar(255, 255, 255));
+					}
+					else if (Data.sgMat[i][j] == 1)
+					{
+						GridImg(Img, i, j, shi, hex, Scalar(0, 0, 0));
+					}
 				}
-				else if (Data.sgMat[i][j] == 1)
-				{
-					GridImg(Img, i, j, shi, hex, Scalar(0, 0, 0));
-				}
-
 			}
 		}
 	}
@@ -487,6 +533,10 @@ namespace sg
 		int i;
 		//x = x + 1;
 		//y = y + 1;
+		int Ox = sgOdd(x);
+		int Oy = sgOdd(y);
+		int Ox1 = sgOdd(x + 1);
+		int Oy1 = sgOdd(y + 1);
 		switch (Mode.Mode0)
 		{
 		case sgMode0:
@@ -496,44 +546,44 @@ namespace sg
 			case sgMode0:
 			{
 				i = 1;
-				NeighLocal[0][i - 1] = x - sgParity(y + 1);
+				NeighLocal[0][i - 1] = x - 1 + Oy1;
 				NeighLocal[1][i - 1] = y + 1;
 				i = 2;
 				NeighLocal[0][i - 1] = x - 1;
 				NeighLocal[1][i - 1] = y;
 				i = 3;
-				NeighLocal[0][i - 1] = x - sgParity(y + 1);
+				NeighLocal[0][i - 1] = x - 1 + Oy1;
 				NeighLocal[1][i - 1] = y - 1;
 				i = 4;
-				NeighLocal[0][i - 1] = x + sgParity(y);
+				NeighLocal[0][i - 1] = x + 1 - Oy;
 				NeighLocal[1][i - 1] = y - 1;
 				i = 5;
 				NeighLocal[0][i - 1] = x + 1;
 				NeighLocal[1][i - 1] = y;
 				i = 6;
-				NeighLocal[0][i - 1] = x + sgParity(y);
+				NeighLocal[0][i - 1] = x + 1 - Oy;
 				NeighLocal[1][i - 1] = y + 1;
 				break;
 			}
 			case sgMode1:
 			{
 				i = 1;
-				NeighLocal[0][i - 1] = x - sgParity(y);
+				NeighLocal[0][i - 1] = x - 1 + Oy;
 				NeighLocal[1][i - 1] = y + 1;
 				i = 2;
 				NeighLocal[0][i - 1] = x - 1;
 				NeighLocal[1][i - 1] = y;
 				i = 3;
-				NeighLocal[0][i - 1] = x - sgParity(y);
+				NeighLocal[0][i - 1] = x - 1 + Oy;
 				NeighLocal[1][i - 1] = y - 1;
 				i = 4;
-				NeighLocal[0][i - 1] = x + sgParity(y + 1);
+				NeighLocal[0][i - 1] = x + 1 - Oy1;
 				NeighLocal[1][i - 1] = y - 1;
 				i = 5;
 				NeighLocal[0][i - 1] = x + 1;
 				NeighLocal[1][i - 1] = y;
 				i = 6;
-				NeighLocal[0][i - 1] = x + sgParity(y + 1);
+				NeighLocal[0][i - 1] = x + 1 - Oy1;
 				NeighLocal[1][i - 1] = y + 1;
 				break;
 			}
@@ -551,19 +601,19 @@ namespace sg
 				NeighLocal[1][i - 1] = y + 1;
 				i = 2;
 				NeighLocal[0][i - 1] = x - 1;
-				NeighLocal[1][i - 1] = y + sgParity(x);
+				NeighLocal[1][i - 1] = y + 1 - Ox;
 				i = 3;
 				NeighLocal[0][i - 1] = x - 1;
-				NeighLocal[1][i - 1] = y - sgParity(x + 1);
+				NeighLocal[1][i - 1] = y - 1 + Ox1;
 				i = 4;
 				NeighLocal[0][i - 1] = x;
 				NeighLocal[1][i - 1] = y - 1;
 				i = 5;
 				NeighLocal[0][i - 1] = x + 1;
-				NeighLocal[1][i - 1] = y - sgParity(x + 1);
+				NeighLocal[1][i - 1] = y - 1 + Ox1;
 				i = 6;
 				NeighLocal[0][i - 1] = x + 1;
-				NeighLocal[1][i - 1] = y + sgParity(x);
+				NeighLocal[1][i - 1] = y + 1 - Ox;
 				break;
 			}
 			case sgMode1:
@@ -573,19 +623,19 @@ namespace sg
 				NeighLocal[1][i - 1] = y + 1;
 				i = 2;
 				NeighLocal[0][i - 1] = x - 1;
-				NeighLocal[1][i - 1] = y + sgParity(x + 1);
+				NeighLocal[1][i - 1] = y + 1 - Ox1;
 				i = 3;
 				NeighLocal[0][i - 1] = x - 1;
-				NeighLocal[1][i - 1] = y - sgParity(x);
+				NeighLocal[1][i - 1] = y - 1 + Ox;
 				i = 4;
 				NeighLocal[0][i - 1] = x;
 				NeighLocal[1][i - 1] = y - 1;
 				i = 5;
 				NeighLocal[0][i - 1] = x + 1;
-				NeighLocal[1][i - 1] = y - sgParity(x);
+				NeighLocal[1][i - 1] = y - 1 + Ox;
 				i = 6;
 				NeighLocal[0][i - 1] = x + 1;
-				NeighLocal[1][i - 1] = y + sgParity(x + 1);
+				NeighLocal[1][i - 1] = y + 1 - Ox1;
 				break;
 			}
 			}
@@ -596,21 +646,45 @@ namespace sg
 
 	void NeighborhoodData(Grid Data, int NeighLocal[2][6], int NeighData[1][6])
 	{
+		int xb = Data.sgRow;
+		int yb = Data.sgCol;
+		int x = 0;
+		int y = 0;
+		int s = 0;
 		for (int i = 0; i < 6; i++)
 		{
-			
-			if ((NeighLocal[0][i] >= 0 && NeighLocal[0][i] < Data.sgRow) && (NeighLocal[1][i] >= 0 && NeighLocal[1][i] < Data.sgCol))
+			x = NeighLocal[0][i];
+			y = NeighLocal[1][i];
+			/*if ((NeighLocal[0][i] >= 0 && NeighLocal[0][i] < Data.sgRow) && (NeighLocal[1][i] >= 0 && NeighLocal[1][i] < Data.sgCol))*/
+			//if ((x>= 0 && x < xb) && (y >= 0 && y < yb))
+			//{
+			//	NeighData[0][i] = Data.sgMat[x][y];
+			//}
+			//else
+			//{
+			//	NeighData[0][i] = 0;
+			//}
+			if (x < 0 || x>=xb || y<0 || y>=yb)
 			{
-				NeighData[0][i] = Data.sgMat[NeighLocal[0][i]][NeighLocal[1][i]];
+				NeighData[0][i] = 0;
 			}
 			else
 			{
-				NeighData[0][i] = 0;
+				//s = Data.sgMat[x][y];
+				NeighData[0][i] = Data.sgMat[x][y];
 			}
-			if ((NeighData[0][i] != 0) && (NeighData[0][i] != 1))
-			{
-				NeighData[0][i] = 0;
-			}
+			//try 
+			//{
+			//	NeighData[0][i] = Data.sgMat[NeighLocal[0][i]][NeighLocal[1][i]];
+			//}
+			//catch(...)
+			//{
+			//	NeighData[0][i] = 0;
+			//}
+			//if ((NeighData[0][i] != 0) && (NeighData[0][i] != 1))
+			//{
+			//	NeighData[0][i] = 0;
+			//}
 		}
 	}
 
@@ -669,6 +743,10 @@ namespace sg
 		int i;
 		//x = x + 1;
 		//y = y + 1;
+		int Ox = sgOdd(x);
+		int Oy = sgOdd(y);
+		int Ox1 = sgOdd(x + 1);
+		int Oy1 = sgOdd(y + 1);
 		switch (Mode.Mode0)
 		{
 			case sgMode0:
@@ -678,19 +756,19 @@ namespace sg
 					case sgMode0:
 					{
 						i = 1;
-						NeighLocal[0][i - 1] = x - 1 - sgParity(y + 1);
+						NeighLocal[0][i - 1] = x - 1 - 1 + Oy1;
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
-						NeighLocal[0][i - 1] = x - 1 - sgParity(y + 1);
+						NeighLocal[0][i - 1] = x - 1 - 1 + Oy1;
 						NeighLocal[1][i - 1] = y-1;
 						i = 3;
 						NeighLocal[0][i - 1] = x;
 						NeighLocal[1][i - 1] = y - 2;
 						i = 4;
-						NeighLocal[0][i - 1] = x +1 + sgParity(y);
+						NeighLocal[0][i - 1] = x +1 + 1 - Oy;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
-						NeighLocal[0][i - 1] = x + 1 + sgParity(y);
+						NeighLocal[0][i - 1] = x + 1 + 1 - Oy;
 						NeighLocal[1][i - 1] = y+1;
 						i = 6;
 						NeighLocal[0][i - 1] = x;
@@ -700,22 +778,22 @@ namespace sg
 					case sgMode1:
 					{
 						i = 1;
-						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[0][i - 1] = x - 1 + Oy;
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
 						NeighLocal[0][i - 1] = x - 1;
 						NeighLocal[1][i - 1] = y;
 						i = 3;
-						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[0][i - 1] = x - 1 + Oy;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 4;
-						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[0][i - 1] = x + 1 - Oy1;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
 						NeighLocal[0][i - 1] = x + 1;
 						NeighLocal[1][i - 1] = y;
 						i = 6;
-						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[0][i - 1] = x + 1 - Oy1;
 						NeighLocal[1][i - 1] = y + 1;
 						break;
 					}
@@ -733,19 +811,19 @@ namespace sg
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y + sgParity(x);
+						NeighLocal[1][i - 1] = y + 1 - Ox;
 						i = 3;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						NeighLocal[1][i - 1] = y - 1 + Ox1;
 						i = 4;
 						NeighLocal[0][i - 1] = x;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						NeighLocal[1][i - 1] = y - 1 + Ox1;
 						i = 6;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y + sgParity(x);
+						NeighLocal[1][i - 1] = y + 1 - Ox;
 						break;
 					}
 					case sgMode1:
@@ -755,19 +833,19 @@ namespace sg
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						NeighLocal[1][i - 1] = y + 1 - Ox1;
 						i = 3;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y - sgParity(x);
+						NeighLocal[1][i - 1] = y - 1 + Ox;
 						i = 4;
 						NeighLocal[0][i - 1] = x;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y - sgParity(x);
+						NeighLocal[1][i - 1] = y - 1 + Ox;
 						i = 6;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						NeighLocal[1][i - 1] = y + 1 - Ox1;
 						break;
 					}
 				}
@@ -830,6 +908,17 @@ namespace sg
 					Gn.sgMat[i][j] = 0;
 				}
 			}
+
+			if (G.sgMat[i][j] == Gn.sgMat[i][j])
+			{
+				G.sgFlag[i][j] = 0;
+				Gn.sgFlag[i][j] = 0;
+			}
+			else
+			{
+				G.sgFlag[i][j] = 1;
+				Gn.sgFlag[i][j] = 1;
+			}
 		}
 	}
 
@@ -838,6 +927,10 @@ namespace sg
 		int i;
 		//x = x + 1;
 		//y = y + 1;
+		int Ox = sgOdd(x);
+		int Oy = sgOdd(y);
+		int Ox1 = sgOdd(x + 1);
+		int Oy1 = sgOdd(y + 1);
 		switch (Mode.Mode0)
 		{
 			case sgMode0:
@@ -869,22 +962,22 @@ namespace sg
 					case sgMode1:
 					{
 						i = 1;
-						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[0][i - 1] = x - 1 + Oy;
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
 						NeighLocal[0][i - 1] = x - 1;
 						NeighLocal[1][i - 1] = y;
 						i = 3;
-						NeighLocal[0][i - 1] = x - sgParity(y);
+						NeighLocal[0][i - 1] = x - 1 + Oy;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 4;
-						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[0][i - 1] = x + 1 - Oy1;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
 						NeighLocal[0][i - 1] = x + 1;
 						NeighLocal[1][i - 1] = y;
 						i = 6;
-						NeighLocal[0][i - 1] = x + sgParity(y + 1);
+						NeighLocal[0][i - 1] = x + 1 - Oy1;
 						NeighLocal[1][i - 1] = y + 1;
 						break;
 					}
@@ -902,19 +995,19 @@ namespace sg
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y + sgParity(x);
+						NeighLocal[1][i - 1] = y + 1 - Ox;
 						i = 3;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						NeighLocal[1][i - 1] = y - 1 + Ox1;
 						i = 4;
 						NeighLocal[0][i - 1] = x;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y - sgParity(x + 1);
+						NeighLocal[1][i - 1] = y - 1 + Ox1;
 						i = 6;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y + sgParity(x);
+						NeighLocal[1][i - 1] = y + 1 - Ox;
 						break;
 					}
 					case sgMode1:
@@ -924,19 +1017,19 @@ namespace sg
 						NeighLocal[1][i - 1] = y + 1;
 						i = 2;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						NeighLocal[1][i - 1] = y + 1 - Ox1;
 						i = 3;
 						NeighLocal[0][i - 1] = x - 1;
-						NeighLocal[1][i - 1] = y - sgParity(x);
+						NeighLocal[1][i - 1] = y - 1 + Ox;
 						i = 4;
 						NeighLocal[0][i - 1] = x;
 						NeighLocal[1][i - 1] = y - 1;
 						i = 5;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y - sgParity(x);
+						NeighLocal[1][i - 1] = y - 1 + Ox;
 						i = 6;
 						NeighLocal[0][i - 1] = x + 1;
-						NeighLocal[1][i - 1] = y + sgParity(x + 1);
+						NeighLocal[1][i - 1] = y + 1 - Ox1;
 						break;
 					}
 				}
