@@ -1,4 +1,5 @@
 #pragma once
+
 namespace gh
 {
 	enum SixGridMode
@@ -6,30 +7,28 @@ namespace gh
 		sgMode0 = 0,
 		sgMode1 = 1
 	};
-	//template <class sgT>
 	class grid
 	{
 	public:
 		grid();
 		grid(int sgLen_);
-		//grid(int sgLen_, bool sgMode_);
 		grid(int sgRow_, int sgCol_);
-		//grid(int sgRow_, int sgCol_,bool sgMode_);
+		unsigned char * operator [](int i);
 
 		int row();
 		int col();
-		//int mode();
-		int range();
+		void Rand();
+		void Rand(double sgSurvivalRate_);
+		
 
-		unsigned char * operator [](int i);
+
 
 	private:
 		int sgRow = 0;
 		int sgCol = 0;
-		//bool sgMode = false;
 		unsigned char **sgMat256V;
-		//bool **sgMat2V;
-		//sgT **sgMatT;
+
+		double sgSurvivalRate=20;
 	};
 
 	class sigr
