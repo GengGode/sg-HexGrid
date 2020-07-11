@@ -4,6 +4,8 @@
 int main()
 {
 	Blocks b();
+	DrawHex DH;
+	//DH.nameWindows("123");
 
 	
 

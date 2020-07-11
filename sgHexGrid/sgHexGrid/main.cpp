@@ -239,7 +239,7 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 
 int main()
 {
-	int len =1000;// 100;
+	int len =200;// 100;
 	int time = 0, T = 200, i, j;
 	char key = '0';
 
@@ -260,10 +260,10 @@ int main()
 	//snow:234_34 or 34_34
 	//45_56
 	//5678_67
-	//int hExist[] = { 5,6,7,8};
-	//int hDeath[] = { 6,7};
-	int hExist[] = { 2,3,4 };
-	int hDeath[] = { 3,4 };
+	int hExist[] = { 5,6,7,8};
+	int hDeath[] = { 6,7};
+	//int hExist[] = { 2,3,4 };
+	//int hDeath[] = { 3,4 };
 	Rule hE(hExist, sizeof(hExist) / sizeof(hExist[0]));
 	Rule hD(hDeath, sizeof(hDeath) / sizeof(hDeath[0]));
 	//hE.out();
@@ -430,14 +430,14 @@ int main()
 				if ( key== '+')
 				{
 					key = '0';
-					T += 10;
+					T += 50;
 					if (T <= 0)T = 10;
 					cout << "Change T up : " << T << "ms" << endl;
 				}
 				else if(key=='-')
 				{
 					key = '0';
-					T -= 10;
+					T -= 50;
 					if (T <= 0)T = 10;
 					cout << "Change T down : " << T << "ms" << endl;
 				}

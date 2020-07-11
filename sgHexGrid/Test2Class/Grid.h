@@ -1,4 +1,7 @@
 #pragma once
+#ifndef GRID_H
+
+#include"Config.h"
 #include<iostream>
 using namespace std;
 
@@ -19,7 +22,7 @@ private:
 	//Coor cen;//center
 	//Coor cor;//corner
 	/*/ 绘图坐标 /*/
-	double x,y;
+	double x, y;
 	//int x, y;
 	//Coor corner[];
 	//double corner[2][6];//顶点组
@@ -47,7 +50,7 @@ class GridMode
 {
 	//网格参数
 public:
-	
+
 
 	GridMode();
 private:
@@ -145,6 +148,8 @@ private:
 	Blocks bs;
 
 };
+
+#endif // !GRID_H
 
 //class Map
 //{

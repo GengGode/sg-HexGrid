@@ -15,39 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="sgHexGrid2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DrawHex.cpp">
+    <ClCompile Include="sigr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Config.cpp">
+    <ClCompile Include="sg2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DrawHex.h">
+    <ClInclude Include="sigr.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.h">
+    <ClInclude Include="sg2.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
+    <Text Include="Text.txt" />
   </ItemGroup>
 </Project>

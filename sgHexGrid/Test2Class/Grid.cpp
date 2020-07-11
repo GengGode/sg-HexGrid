@@ -33,11 +33,11 @@ Blocks::Blocks(unsigned char u_, unsigned char v_, double r_)
 }
 //Blocks::~Blocks() {}
 
-Map::Map() : Map(10) {}
-Map::Map(double r_)
-{
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			blocks[i][j] = Blocks(i, j, r_);
-}
+//Map::Map() : Map(10) {}
+//Map::Map(double r_)
+//{
+//	for (int i = 0; i < 8; i++)
+//		for (int j = 0; j < 8; j++)
+//			blocks[i][j] = Blocks(i, j, r_);
+//}
 //Map::~Map() {}

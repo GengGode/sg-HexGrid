@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test1Class", "Test1Class\Te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test2Class", "Test2Class\Test2Class.vcxproj", "{E5D0868D-7D7E-4872-9F27-3E9F1F1A4269}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sgHexGrid2", "sgHexGrid2\sgHexGrid2.vcxproj", "{6166CB7E-9872-4074-B6D6-36A987BF7A8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{E5D0868D-7D7E-4872-9F27-3E9F1F1A4269}.Release|x64.Build.0 = Release|x64
 		{E5D0868D-7D7E-4872-9F27-3E9F1F1A4269}.Release|x86.ActiveCfg = Release|Win32
 		{E5D0868D-7D7E-4872-9F27-3E9F1F1A4269}.Release|x86.Build.0 = Release|Win32
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Debug|x64.ActiveCfg = Debug|x64
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Debug|x64.Build.0 = Debug|x64
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Debug|x86.ActiveCfg = Debug|Win32
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Debug|x86.Build.0 = Debug|Win32
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Release|x64.ActiveCfg = Release|x64
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Release|x64.Build.0 = Release|x64
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Release|x86.ActiveCfg = Release|Win32
+		{6166CB7E-9872-4074-B6D6-36A987BF7A8C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
