@@ -406,11 +406,12 @@ namespace sg
 	void NextStep3(sg::GridMode Mode, Grid G, Grid Gn, Rules H);
 	void NeighborhoodLocal3(sg::GridMode Mode, int x, int y, int NeighLocal[2][6]);
 
-
+	/*
 	BOOL CALLBACK EnumWindowsProc_0(HWND hWnd, LPARAM IProgress);
 	void SetDesktop(char FormName[]);
 	void sgInitializationWindows(char fGrid[], char fBar[], char fCon[]);
 	void sgGetExePath(char In[260]);
+	*/
 }
 #elif SIXGRID_H_TEST
 /*

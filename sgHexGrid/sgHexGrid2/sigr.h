@@ -1,7 +1,19 @@
 #pragma once
+#include<iostream>
+#include<Windows.h>
+#include<opencv2/opencv.hpp>
+using namespace cv;
+using namespace std;
 
 namespace gh
 {
+	class sgException
+	{
+	public:
+		string msg;
+		sgException(string s) : msg(s) {}
+	};
+
 	enum SixGridMode
 	{
 		sgMode0 = 0,
@@ -15,6 +27,8 @@ namespace gh
 		grid(int sgRow_, int sgCol_);
 		unsigned char * operator [](int i);
 
+		~grid();
+
 		int row();
 		int col();
 
@@ -22,23 +36,42 @@ namespace gh
 		void Zero();
 		void Rand();
 		void Rand(double sgSurvivalRate_);
-
+		void SetRow(int sgRow_);
+		void SetCol(int sgCol_);
 	private:
 		int sgRow = 0;
 		int sgCol = 0;
-		unsigned char **sgMat256V;
+		unsigned char **sgMat256V = nullptr;
 	};
 
+	class pic
+	{
+	public:
+		pic();
+		pic(int sgLen_);
+		pic(int sgRow_, int sgCol_);
+		
+		void set(int sgRow_, int sgCol_);
+	private:
+		int sgRow = 1280;
+		int sgCol = 720;
+		Mat sgImg = Mat(1280, 720, CV_8UC3);
+		
+	};
 	class sigr
 	{
 	public:
+		sigr();
+		sigr(int pRow_, int pCol_);
 
 	private:
-
+		grid g;
+		pic p;
+		char *sgWindowName = (char*)"Undefined";
 	};
 
 }
-
+/*
 namespace ghm
 {
 	class sgArray;
@@ -93,3 +126,4 @@ namespace ghm
 		return sgArr[j];
 	}
 }
+*/

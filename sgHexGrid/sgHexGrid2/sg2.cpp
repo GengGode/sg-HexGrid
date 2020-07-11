@@ -1041,6 +1041,7 @@ namespace sg
 #pragma endregion
 
 #pragma region sgWindowsSet
+	/*
 	BOOL CALLBACK EnumWindowsProc_0(HWND hWnd, LPARAM IProgress)
 	{
 		if (::FindWindowEx(hWnd, NULL, "SHELLDLL_DefView", NULL) != NULL)
@@ -1065,7 +1066,8 @@ namespace sg
 			SetParent(my_hWnd, hWnd);
 		}
 	}
-
+	*/
+	/*
 	void sgInitializationWindows(char fGrid[], char fBar[], char fCon[])
 	{
 		HWND h_FormGrid = ::FindWindow(NULL, fGrid);
@@ -1097,6 +1099,7 @@ namespace sg
 		//char conPath[MAX_PATH];
 		GetModuleFileName(NULL, (LPSTR) In, 260);
 	}
+	*/
 #pragma endregion
 
 }

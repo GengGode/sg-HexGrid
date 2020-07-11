@@ -2,8 +2,9 @@
 //
 
 #include"sg2.h"
-
+#include"sigr.h"
 using namespace sg;
+using namespace gh;
 
 
 Cube cubeNei[] = {
@@ -239,6 +240,7 @@ void on_MouseHandle(int event, int x, int y, int flags, void* param)
 	}
 }
 
+gh::grid a(10,-1);
 
 int main()
 {
@@ -255,9 +257,9 @@ int main()
 
 	//控制台程序窗口名
 	char FormCon[260];
-	sgGetExePath(FormCon);
+	//sgGetExePath(FormCon);
 
-	GridMode Mode(sgMode0, sgMode0);
+	GridMode Mode(sg::sgMode0, sg::sgMode0);
 	Grid G(len), Gnext(len);
 	//snow:234_34 or 34_34
 	//45_56
@@ -279,7 +281,7 @@ int main()
 	setMouseCallback(FormGrid, on_MouseHandle, (void*) &GM);
 
 	//窗口位置初始化
-	sgInitializationWindows(FormGrid, FormBar, FormCon);
+	//sgInitializationWindows(FormGrid, FormBar, FormCon);
 	cout << "Initizal ..." << endl;
 
 	//进入绘图
