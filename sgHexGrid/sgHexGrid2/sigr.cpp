@@ -23,12 +23,27 @@ int gh::grid::col()
 {
 	return sgCol;
 }
-
+void gh::grid::One()
+{
+	for (int i = 0; i < sgRow; i++)
+		for (int j = 0; j < sgCol; j++)
+			sgMat256V[i][j] = 1;
+}
+void gh::grid::Zero()
+{
+	for (int i = 0; i < sgRow; i++)
+		for (int j = 0; j < sgCol; j++)
+			sgMat256V[i][j] = 0;
+}
+/*
+* Ëæ»úÅÅ²¼
+* 
+*/
 void gh::grid::Rand()
 {
 	for (int i = 0; i < sgRow; i++)
 		for (int j = 0; j < sgCol; j++)
-			if (rand() % 100 <= sgSurvivalRate)
+			if (rand() % 100 <= 20)
 				sgMat256V[i][j] = 1;
 			else
 				sgMat256V[i][j] = 0;

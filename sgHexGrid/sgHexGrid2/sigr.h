@@ -17,18 +17,16 @@ namespace gh
 
 		int row();
 		int col();
+
+		void One();
+		void Zero();
 		void Rand();
 		void Rand(double sgSurvivalRate_);
-		
-
-
 
 	private:
 		int sgRow = 0;
 		int sgCol = 0;
 		unsigned char **sgMat256V;
-
-		double sgSurvivalRate=20;
 	};
 
 	class sigr
