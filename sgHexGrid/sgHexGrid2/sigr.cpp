@@ -1,5 +1,60 @@
 #include "sigr.h"
 
+gh::rule::rule():rule(2,6) {}
+
+gh::rule::rule(int sgNeighborhood_):rule(2,sgNeighborhood_) {}
+
+gh::rule::rule(int sgNeighborhood_, int sgState_): sgNeighborhood(sgNeighborhood_), sgState(sgState_)
+{
+	if (sgState_ < 2 )throw sgException("The number of States must be greater than or equal to two !");
+	if (sgState_ > 256)throw sgException("The number of States cannot be more than 256 !");
+	if (sgNeighborhood_ < 1)throw sgException("The number of Neighborhood must be greater than or equal to 1 !");
+	if (sgNeighborhood_ > 256)throw sgException("The number of Neighborhood cannot be more than 256 !");
+
+	sgStateTransitionTable = new bool**[sgState_];
+	for (int i = 0; i < sgState_; i++)
+	{
+		sgStateTransitionTable[i] = new bool*[sgState_];
+		for (int j = 0; j < sgState_; j++)
+		{
+			sgStateTransitionTable[i][j] = new bool[sgNeighborhood_];
+		}
+	}
+
+}
+
+gh::rule::~rule()
+{
+	for (int i = 0; i < sgState; i++)
+	{
+		for (int j = 0; j < sgState; j++)
+		{
+			delete[] sgStateTransitionTable[i][j];
+			sgStateTransitionTable[i][j] = nullptr;
+		}
+		delete[] sgStateTransitionTable[i];
+		sgStateTransitionTable[i] = nullptr;
+	}
+	delete sgStateTransitionTable;
+	sgStateTransitionTable = nullptr;
+}
+
+void gh::rule::set(int sState_, int eState_, int tNeighbor_)
+{
+	if (sState_ >= 2 || eState_ <= sgState)throw sgException("Start state and target state need to be between 2 and number of states !");
+	if (tNeighbor_ >= 1 || tNeighbor_ <= 256)throw sgException("Setting the starting point and setting the end point should be within the neighborhood !");
+	sgStateTransitionTable[sState_][eState_][tNeighbor_] = true;
+}
+
+void gh::rule::set(int sState_, int eState_, int sNeighbor_, int eNeighbor_)
+{
+	if (sState_ >= 2 || eState_ <= sgState)throw sgException("Start state and target state need to be between 2 and number of states !");
+	if (sNeighbor_ >= 1 || eNeighbor_<=256)throw sgException("The setting target needs to be within the neighborhood !");
+	for (int i = sNeighbor_; i <= eNeighbor_; i++)
+		sgStateTransitionTable[sState_][eState_][i] = true;
+
+}
+
 gh::grid::grid() :grid(4) {}
 
 gh::grid::grid(int sgLen_):grid(sgLen_, sgLen_) {}
@@ -71,7 +126,10 @@ void gh::grid::SetRow(int sgRow_)
 		for (int j = 0; j < sgCol; j++)
 			tmp[i][j] = sgMat256V[i][j];
 	for (int i = 0; i < sgRow; i++)
-		delete[]sgMat256V[i];
+	{
+		delete[] sgMat256V[i];
+		sgMat256V[i] = nullptr;
+	}
 	delete sgMat256V;
 	sgMat256V = tmp;
 }
@@ -83,12 +141,14 @@ void gh::grid::SetCol(int sgCol_)
 	{
 		tmp[i] = new unsigned char[sgCol_]();
 	}
-
 	for (int i = 0; i < sgRow; i++)
 		for (int j = 0; j < min(sgCol,sgCol_); j++)
 			tmp[i][j] = sgMat256V[i][j];
 	for (int i = 0; i < sgRow; i++)
-		delete[]sgMat256V[i];
+	{
+		delete[] sgMat256V[i];
+		sgMat256V[i] = nullptr;
+	}
 	delete sgMat256V;
 	sgMat256V = tmp;
 }
@@ -101,7 +161,10 @@ unsigned char * gh::grid::operator[](int i)
 gh::grid::~grid()
 {
 	for (int i = 0; i < sgRow; i++)
-		delete[]sgMat256V[i];
+	{
+		delete[] sgMat256V[i];
+		sgMat256V[i] = nullptr;
+	}
 	delete sgMat256V;
 	sgMat256V = nullptr;
 }
@@ -125,3 +188,5 @@ void gh::pic::set(int sgRow_, int sgCol_)
 gh::sigr::sigr()
 {
 }
+
+

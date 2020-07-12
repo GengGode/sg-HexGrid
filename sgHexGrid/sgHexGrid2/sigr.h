@@ -19,6 +19,32 @@ namespace gh
 		sgMode0 = 0,
 		sgMode1 = 1
 	};
+
+	/*
+	* ×´Ì¬×ªÒÆ¹æÔò 
+	* 
+	*
+	*/
+
+	class rule
+	{
+	public:
+		rule();
+		rule(int sgNeighborhood_);
+		rule(int sgNeighborhood_, int sgState_);
+
+		~rule();
+
+		void set(int sState_, int eState_, int tNeighbor_);
+		void set(int sState_, int eState_, int sNeighbor_, int eNeighbor_);
+
+	private:
+		unsigned char sgState;
+		unsigned char sgNeighborhood;
+		bool ***sgStateTransitionTable;
+
+	};
+
 	class grid
 	{
 	public:
@@ -58,11 +84,12 @@ namespace gh
 		Mat sgImg = Mat(1280, 720, CV_8UC3);
 		
 	};
+
 	class sigr
 	{
 	public:
 		sigr();
-		sigr(int pRow_, int pCol_);
+		sigr(int pRow_, int pCol_,int gRow_,int gCol_);
 
 	private:
 		grid g;
