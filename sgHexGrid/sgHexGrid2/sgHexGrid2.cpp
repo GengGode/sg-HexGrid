@@ -7,11 +7,13 @@ using namespace gh;
 int main()
 {
 	sigr si(360, 640, 12, 16);
-	si.show();
-	Mat k(720, 1280, CV_8UC3,Scalar(255,255,200));
-	imshow("13", k);
+	for (int i = 0; i < 10; i++)
+	{
+		si.draw();
+		si.show();
+	}
 
-	waitKey(0);
+	waitKey(5000);
 	return 0;
 }
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

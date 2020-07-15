@@ -79,10 +79,10 @@ namespace gh
 	{
 	public:
 		sgBlock();
-
+		unsigned char *operator[](int i);
 	private:
 		sgUV sgCoor;
-		unsigned char sgMat[127][127];
+		unsigned char sgMat[127][127] = { 0 };
 	};
 
 	class sgBlocks
@@ -91,16 +91,35 @@ namespace gh
 		sgBlocks();
 
 	private:
-
-		
+		sgBlock **sgGrid=nullptr;
 	};
 
-	class sgRenderRange
+	class sgRect
 	{
 	public:
-		sgRenderRange();
+		sgRect();
+		sgRect(int tx, int ty, int bx, int by);
 	private:
+		long int sgLef;
+		long int sgTop;
+		long int sgRig;
+		long int sgBot;
+	};
 
+	class sgRenderRect
+	{
+	public:
+		sgRenderRect();
+		sgRenderRect(int tx,int ty,int bx,int by);
+	private:
+		//int sgTopL;
+		//int sgTopR;
+		//int sgDowL;
+		//int sgDowR;
+		int sgTopLeftX;
+		int sgTopLeftY;
+		int sgBotRighX;
+		int sgBotRighY;
 	};
 
 	class rule
@@ -129,16 +148,20 @@ namespace gh
 		conf();
 
 		Scalar bgc();
+		double r();
+		double w();
+		double R();
+
 	private:
-		Scalar sgBGC = Scalar(128, 128, 128);
+		Scalar sgBGC = Scalar(255, 255, 200);
 		
 		sgGridMode sgGM;
 		int sgSecConX = 640;
 		int sgSecConY = 360;
 		double sgTarConX = 0;
 		double sgTarConY = 0;
-		double r;
-		double w;
+		double sgHexR = 4.8;
+		double sgSpaceW=1.8;
 		double b;
 		double dr;
 	};
@@ -182,11 +205,12 @@ namespace gh
 		void set(Scalar c);
 		void set(int sgRow_, int sgCol_);
 		Mat img();
+		Mat sgImg = Mat(1280, 720, CV_8UC3);
+
 	private:
 		int sgRow = 1280;
 		int sgCol = 720;
-		Mat sgImg = Mat(1280, 720, CV_8UC3);
-		
+		//Mat sgImg = Mat(1280, 720, CV_8UC3);
 	};
 
 	class sigr
@@ -194,17 +218,20 @@ namespace gh
 	public:
 		sigr();
 		sigr(int pRow_, int pCol_,int gRow_,int gCol_);
-
-		void bgc();
-		void draw();
-		void show();
 	private:
 		pic p;
 		grid g;
 		rule r;
 		conf c;
+		sgBlock b;
 		char *sgWindowName = (char*)"Undefined";
 		HWND sgMainForm = nullptr;
+
+	public:
+		void bgc();
+		void draw();
+		void show();
+
 	};
 
 }

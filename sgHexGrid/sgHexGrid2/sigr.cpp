@@ -6,6 +6,13 @@ xp(gh::sgX, gh::sgP),
 yj(gh::sgY, gh::sgJ), 
 yp(gh::sgY, gh::sgP);
 
+static double cosTheta[6] = { 0.8660,0,-0.8660,-0.8660,0,0.8660 };
+static double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
+static double xjCos[] = { 0.866025, 0., -0.866025, -0.866025, 0., 0.866025 };
+static double yjSin[] = { 0.5, 1., 0.5, -0.5, -1., -0.5 };
+static double xpCos[] = { 1., 0.5, -0.5, -1., -0.5, 0.5 };
+static double ypSin[] = { 0.,0.866025,0.866025,0.,-0.866025,-0.866025 };
+
 gh::rule::rule():rule(2,6) {}
 
 gh::rule::rule(int sgNeighborhood_):rule(2,sgNeighborhood_) {}
@@ -257,18 +264,116 @@ void gh::sigr::bgc()
 
 void gh::sigr::draw()
 {
-	if (sgMainForm == nullptr)
+	//getRect();
+	//sgRenderRect ActivationRect(0,0,127,127);
+	/******/
+	bgc();
+	static double cosTheta[6] = { 0.866025, 0., -0.866025, -0.866025, 0., 0.866025 };
+	static double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
+	int tmpx = 0, tmpy = 0;
+	double dx, dy;
+	int m, n;
+	double root3 = 1.7321*c.R();
+	double In[2][6] = { 0 };
+	Point point[1][6];
+	int np[] = { 6 };
+	const Point* pp[1] = { point[0] };
+	Scalar black(0, 0, 0);
+	double t = (double) cv::getTickCount();
+	for (int i = 0; i < 10; i++)
 	{
-		namedWindow(sgWindowName);//p.img());
+		for (int j = 0; j < 10; j++)
+		{
+			m = i;
+			n = j;
+			n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
+			dy = c.R() * n * 3 / 2;
+			for (int k = 0; k < 6; k++)
+			{
+				In[0][k] = dx + (c.R()+2) * cosTheta[k];
+				In[1][k] = dy + (c.R()+2) * sinTheta[k];
+				point[0][k].x = cvRound(In[0][k] + dx);
+				point[0][k].y = cvRound(In[1][k] + dy);
+			}
+			//polylines(p.sgImg, pp,np,1,1,Scalar(255,255,0),4,LINE_AA);
+			fillConvexPoly(p.sgImg,*pp, *np,black , LINE_AA);// , LINE_AA);
+
+		}
+		for (int j = 0; j < 10; j++)
+		{
+			m = i;
+			n = j;
+			n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
+			dy = c.R()* n * 3 / 2;
+			for (int k = 0; k < 6; k++)
+			{
+				In[0][k] = dx + (c.R()-2) * cosTheta[k];
+				In[1][k] = dy + (c.R() -2)* sinTheta[k];
+				point[0][k].x = cvRound(In[0][k] + dx);
+				point[0][k].y = cvRound(In[1][k] + dy);
+			}
+			//polylines(p.sgImg, pp, np, 1, 1, Scalar(255, 255, 0), 4, LINE_AA);
+			fillConvexPoly(p.sgImg, *pp, *np, Scalar(255, 255, 255), LINE_AA);// , LINE_AA);
+
+		}
 	}
-	sgMainForm = FindWindowA(NULL, sgWindowName);
-	imshow(sgWindowName, p.img());
+	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
+	cout << "cost time A: " << t << endl;
+	t = (double) cv::getTickCount();
+	for (int i = 10; i < 20; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			m = i;
+			n = j;
+			n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
+			dy = c.R() * n * 3 / 2;
+			for (int k = 0; k < 6; k++)
+			{
+				In[0][k] = dx + c.R() * cosTheta[k];
+				In[1][k] = dy + c.R() * sinTheta[k];
+				point[0][k].x = cvRound(In[0][k] + dx);
+				point[0][k].y = cvRound(In[1][k] + dy);
+			}
+			//fillPoly(p.sgImg, pp, np, 1, black,LINE_AA);
+			polylines(p.sgImg, pp, np, 1, 1, Scalar(255, 255, 0), 4, LINE_AA);
+
+		}
+		//for (int j = 0; j < 10; j++)
+		//{
+		//	m = i;
+		//	n = j;
+		//	n % 2 ? dx = (m - 0.25) * (root3 + 1) : dx = (m + 0.25)* (root3 + 1);
+		//	dy = (c.R() + 1) * n * 3 / 2;
+		//	for (int k = 0; k < 6; k++)
+		//	{
+		//		In[0][k] = dx + c.R() * cosTheta[k];
+		//		In[1][k] = dy + c.R() * sinTheta[k];
+		//		point[0][k].x = cvRound(In[0][k] + dx);
+		//		point[0][k].y = cvRound(In[1][k] + dy);
+		//	}
+		//	polylines(p.sgImg, pp, np, 1, 1, Scalar(255, 255, 0), 4, LINE_AA);
+
+		//	//fillPoly(p.sgImg, pp, np, 1, Scalar(255, 255, 255), LINE_AA);
+		//}
+	}
+	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
+	cout << "cost time B: " << t << endl;
+	//imshow(sgWindowName, p.img());
+	//waitKey(2000);
 }
 
 void gh::sigr::show()
 {
-	bgc();
-	draw();
+	if (sgMainForm == nullptr)
+	{
+		namedWindow(sgWindowName);//p.img());
+	}
+	else if (sgMainForm != FindWindowA(NULL, sgWindowName))
+	{
+		sgMainForm = FindWindowA(NULL, sgWindowName);
+	}
+	imshow(sgWindowName, p.img());
 }
 
 gh::sgGridMode::sgGridMode()
@@ -288,6 +393,21 @@ gh::conf::conf()
 Scalar gh::conf::bgc()
 {
 	return sgBGC;
+}
+
+double gh::conf::r()
+{
+	return sgHexR;
+}
+
+double gh::conf::w()
+{
+	return sgSpaceW;
+}
+
+double gh::conf::R()
+{
+	return sgHexR + sgSpaceW;
 }
 
 gh::sgStateColor::sgStateColor()
@@ -344,3 +464,47 @@ double gh::sgCoor::y()
 	return sgY;
 }
 
+gh::sgRenderRect::sgRenderRect() :sgRenderRect(0,0,1,1) {}
+
+gh::sgRenderRect::sgRenderRect(int tx, int ty, int bx, int by)
+{
+	sgTopLeftX = tx;
+	sgTopLeftY = ty;
+	sgBotRighX = bx;
+	sgBotRighY = by;
+}
+
+gh::sgRect::sgRect() :sgRect(0, 0, 1, 1) {}
+
+gh::sgRect::sgRect(int tx, int ty, int bx, int by)
+{
+	sgLef = tx;
+	sgTop = ty;
+	sgRig = bx;
+	sgBot = by;
+}
+
+gh::sgBlocks::sgBlocks()
+{
+	sgGrid = new sgBlock*[1];
+	sgGrid[0] = new sgBlock[1];
+	sgGrid[0][0];
+
+}
+
+gh::sgBlock::sgBlock()
+{
+}
+
+unsigned char * gh::sgBlock::operator[](int i)
+{
+	return sgMat[i];
+}
+
+gh::sgUV::sgUV():sgUV(0,0) {}
+
+gh::sgUV::sgUV(int u, int v)
+{
+	sgU = u;
+	sgV = v;
+}
