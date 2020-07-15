@@ -1,7 +1,16 @@
 
 
 
-
+point2[0],point2[1],point2[2],point2[3],point2[4],point2[5],point2[6],point2[7],point2[8],point2[9],
+		point2[10] ,point2[11],point2[12],point2[13],point2[14],point2[15],point2[16],point2[17],point2[18],point2[19],
+		point2[20],point2[21],point2[22],point2[23],point2[24],point2[25],point2[26],point2[27],point2[28],point2[29],
+		point2[30],point2[31],point2[32],point2[33],point2[34],point2[35],point2[36],point2[37],point2[38],point2[39],
+		point2[40],point2[41],point2[42],point2[43],point2[44],point2[45],point2[46],point2[47],point2[48],point2[49],
+		point2[50],point2[51],point2[52],point2[53],point2[54],point2[55],point2[56],point2[57],point2[58],point2[59],
+		point2[60],point2[61],point2[62],point2[63],point2[64],point2[65],point2[66],point2[67],point2[68],point2[69],
+		point2[70],point2[71],point2[72],point2[73],point2[74],point2[75],point2[76],point2[77],point2[78],point2[79],
+		point2[80],point2[81],point2[82],point2[83],point2[84],point2[85],point2[86],point2[87],point2[88],point2[89],
+		point2[90],point2[91],point2[92],point2[93],point2[94],point2[95],point2[96],point2[97],point2[98],point2[99],
 
 // sgHexGrid2.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //

@@ -282,7 +282,7 @@ void gh::sigr::draw()
 	double t = (double) cv::getTickCount();
 	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 1; j++)
 		{
 			m = i;
 			n = j;
@@ -296,33 +296,22 @@ void gh::sigr::draw()
 				point[0][k].y = cvRound(In[1][k] + dy);
 			}
 			//polylines(p.sgImg, pp,np,1,1,Scalar(255,255,0),4,LINE_AA);
-			fillConvexPoly(p.sgImg,*pp, *np,black , LINE_AA);// , LINE_AA);
-
-		}
-		for (int j = 0; j < 10; j++)
-		{
-			m = i;
-			n = j;
-			n % 2 ? dx = (m - 0.25) * root3 : dx = (m + 0.25)* root3;
-			dy = c.R()* n * 3 / 2;
-			for (int k = 0; k < 6; k++)
-			{
-				In[0][k] = dx + (c.R()-2) * cosTheta[k];
-				In[1][k] = dy + (c.R() -2)* sinTheta[k];
-				point[0][k].x = cvRound(In[0][k] + dx);
-				point[0][k].y = cvRound(In[1][k] + dy);
-			}
-			//polylines(p.sgImg, pp, np, 1, 1, Scalar(255, 255, 0), 4, LINE_AA);
-			fillConvexPoly(p.sgImg, *pp, *np, Scalar(255, 255, 255), LINE_AA);// , LINE_AA);
-
+			fillConvexPoly(p.sgImg,*pp, *np,black , LINE_AA);// , LINE_AA)
 		}
 	}
 	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
 	cout << "cost time A: " << t << endl;
+	int q = 0;
+	Point point2[10][6];
+	int np2[10] = { 6,6,6,6,6,6,6,6,6,6};
+	const Point* pp2[10] = 
+	{
+		point2[0],point2[1],point2[2],point2[3],point2[4],point2[5],point2[6],point2[7],point2[8],point2[9]
+	};
 	t = (double) cv::getTickCount();
 	for (int i = 10; i < 20; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 1; j++)
 		{
 			m = i;
 			n = j;
@@ -332,31 +321,16 @@ void gh::sigr::draw()
 			{
 				In[0][k] = dx + c.R() * cosTheta[k];
 				In[1][k] = dy + c.R() * sinTheta[k];
-				point[0][k].x = cvRound(In[0][k] + dx);
-				point[0][k].y = cvRound(In[1][k] + dy);
+				point2[q][k].x = cvRound(In[0][k] + dx);
+				point2[q][k].y = cvRound(In[1][k] + dy);
 			}
-			//fillPoly(p.sgImg, pp, np, 1, black,LINE_AA);
-			polylines(p.sgImg, pp, np, 1, 1, Scalar(255, 255, 0), 4, LINE_AA);
-
+			//point2[q][6].x = point2[q][0].x;
+			//point2[q][6].y = point2[q][0].y;
+			q++;
+			cout << "count:" << q << endl;
 		}
-		//for (int j = 0; j < 10; j++)
-		//{
-		//	m = i;
-		//	n = j;
-		//	n % 2 ? dx = (m - 0.25) * (root3 + 1) : dx = (m + 0.25)* (root3 + 1);
-		//	dy = (c.R() + 1) * n * 3 / 2;
-		//	for (int k = 0; k < 6; k++)
-		//	{
-		//		In[0][k] = dx + c.R() * cosTheta[k];
-		//		In[1][k] = dy + c.R() * sinTheta[k];
-		//		point[0][k].x = cvRound(In[0][k] + dx);
-		//		point[0][k].y = cvRound(In[1][k] + dy);
-		//	}
-		//	polylines(p.sgImg, pp, np, 1, 1, Scalar(255, 255, 0), 4, LINE_AA);
-
-		//	//fillPoly(p.sgImg, pp, np, 1, Scalar(255, 255, 255), LINE_AA);
-		//}
 	}
+	fillPoly(p.sgImg, pp2, np2,10,black, LINE_AA);// , LINE_AA);
 	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
 	cout << "cost time B: " << t << endl;
 	//imshow(sgWindowName, p.img());
