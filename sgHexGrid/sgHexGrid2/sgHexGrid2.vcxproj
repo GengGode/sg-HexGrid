@@ -154,9 +154,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="sg2.cpp" />
     <ClCompile Include="sgHexGrid2.cpp" />
     <ClCompile Include="sigr.cpp" />
-    <ClCompile Include="sg2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sg2.h" />

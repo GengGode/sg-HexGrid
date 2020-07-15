@@ -1,5 +1,11 @@
 #include "sigr.h"
 
+gh::sgGridMode
+xj(gh::sgX, gh::sgJ), 
+xp(gh::sgX, gh::sgP), 
+yj(gh::sgY, gh::sgJ), 
+yp(gh::sgY, gh::sgP);
+
 gh::rule::rule():rule(2,6) {}
 
 gh::rule::rule(int sgNeighborhood_):rule(2,sgNeighborhood_) {}
@@ -61,12 +67,38 @@ gh::grid::grid(int sgLen_):grid(sgLen_, sgLen_) {}
 
 gh::grid::grid(int sgRow_, int sgCol_): sgRow(sgRow_), sgCol(sgCol_)
 {
-	if (sgRow <= 0 || sgCol <= 0)throw sgException("Size cannot be less than or equal to zero !");
+	if (sgRow_ <= 0 || sgCol_ <= 0)throw sgException("Size cannot be less than or equal to zero !");
 	sgMat256V = new unsigned char*[sgRow_];
 	for (int i = 0; i < sgRow_; i++)
 	{
 		sgMat256V[i] = new unsigned char[sgCol_]();
 	}
+}
+
+gh::grid::grid(grid & grid_)
+{
+	grid tmp(grid_.row(),grid_.col());
+	for (int i = 0; i < sgRow; i++)
+	{
+		for (int j = 0; j < sgCol; j++)
+		{
+			tmp.SetMat(i, j,sgMat256V[i][j]);
+		}
+	}
+
+}
+
+gh::grid gh::grid::operator=(const grid & grid_)
+{
+	grid tmp(grid_.sgRow, grid_.sgCol);
+	for (int i = 0; i < sgRow; i++)
+	{
+		for (int j = 0; j < sgCol; j++)
+		{
+			tmp.SetMat(i, j, sgMat256V[i][j]);
+		}
+	}
+	return tmp;
 }
 
 int gh::grid::row()
@@ -78,18 +110,26 @@ int gh::grid::col()
 {
 	return sgCol;
 }
+
+int gh::grid::mat(int i, int j)
+{
+	return sgMat256V[i][j];
+}
+
 void gh::grid::One()
 {
 	for (int i = 0; i < sgRow; i++)
 		for (int j = 0; j < sgCol; j++)
 			sgMat256V[i][j] = 1;
 }
+
 void gh::grid::Zero()
 {
 	for (int i = 0; i < sgRow; i++)
 		for (int j = 0; j < sgCol; j++)
 			sgMat256V[i][j] = 0;
 }
+
 /*
 * Ëæ»úÅÅ²¼
 * 
@@ -153,6 +193,11 @@ void gh::grid::SetCol(int sgCol_)
 	sgMat256V = tmp;
 }
 
+void gh::grid::SetMat(int i, int j, int n)
+{
+	sgMat256V[i][j] = n;
+}
+
 unsigned char * gh::grid::operator[](int i)
 {
 	return  sgMat256V[i];
@@ -175,8 +220,13 @@ gh::pic::pic(int sgLen_):pic(sgLen_,sgLen_) {}
 
 gh::pic::pic(int sgRow_, int sgCol_):sgRow(sgRow_), sgCol(sgCol_)
 {
-	if (sgRow <= 0 || sgCol <= 0)throw sgException("Size cannot be less than or equal to zero !");
+	if (sgRow_ <= 0 || sgCol_ <= 0)throw sgException("Size cannot be less than or equal to zero !");
 	sgImg = Mat(sgRow_, sgCol_,CV_8UC3);
+}
+
+void gh::pic::set(Scalar c)
+{
+	sgImg = c;
 }
 
 void gh::pic::set(int sgRow_, int sgCol_)
@@ -185,8 +235,112 @@ void gh::pic::set(int sgRow_, int sgCol_)
 	sgImg = Mat(sgRow_, sgCol_, CV_8UC3);
 }
 
+Mat gh::pic::img()
+{
+	return sgImg;
+}
+
 gh::sigr::sigr()
 {
 }
 
+gh::sigr::sigr(int pRow_, int pCol_, int gRow_, int gCol_)
+{
+	p = pic(pRow_, pCol_);
+	g = grid(gRow_, gCol_);
+}
+
+void gh::sigr::bgc()
+{
+	p.set(c.bgc());
+}
+
+void gh::sigr::draw()
+{
+	if (sgMainForm == nullptr)
+	{
+		namedWindow(sgWindowName);//p.img());
+	}
+	sgMainForm = FindWindowA(NULL, sgWindowName);
+	imshow(sgWindowName, p.img());
+}
+
+void gh::sigr::show()
+{
+	bgc();
+	draw();
+}
+
+gh::sgGridMode::sgGridMode()
+{
+}
+
+gh::sgGridMode::sgGridMode(sgMode u, sgMode v)
+{
+	sgU = u;
+	sgV = v;
+}
+
+gh::conf::conf()
+{
+}
+
+Scalar gh::conf::bgc()
+{
+	return sgBGC;
+}
+
+gh::sgStateColor::sgStateColor()
+{
+	sgN = 2;
+	sgColor = new Scalar[2];
+	sgColor[0] = sgStartStateColor;
+	sgColor[1] = sgEndStateColor;
+}
+
+gh::sgStateColor::sgStateColor(int n)
+{
+	sgN = n;
+	sgColor = new Scalar[n];
+	sgColor[0] = sgStartStateColor;
+	sgColor[n - 1] = sgEndStateColor;
+	for (int i = 1; i < n-1; i++)
+	{
+		for (int k = 0; k < 3; k++)
+			sgColor[i].val[k] = sgStartStateColor.val[k] + (sgEndStateColor.val[k] - sgStartStateColor.val[k])*i / (n - 1);
+	}
+}
+
+gh::sgStateColor::~sgStateColor()
+{
+	delete sgColor;
+	sgColor = nullptr;
+}
+
+Scalar gh::sgStateColor::get(int state)
+{
+	return sgColor[state];
+}
+
+gh::sgCoor::sgCoor()
+{
+	sgX = 0;
+	sgY = 0;
+}
+
+gh::sgCoor::sgCoor(double x, double y)
+{
+	sgX = x;
+	sgY = y;
+}
+
+double gh::sgCoor::x()
+{
+	return sgX;
+}
+
+double gh::sgCoor::y()
+{
+	return sgY;
+}
 

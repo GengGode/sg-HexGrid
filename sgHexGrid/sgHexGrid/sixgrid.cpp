@@ -496,7 +496,7 @@ namespace sg
 	void GridShow(Mat Img, Grid Data,HexType hex, Shifting shi)
 	{
 		int i, j;
-		Img = Scalar(128,128,128);
+		Img = Scalar(255,255,210);
 		for (i = 0; i < Data.sgRow; i++)
 		{
 			for (j = 0; j < Data.sgCol; j++)
