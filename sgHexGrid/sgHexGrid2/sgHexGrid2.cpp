@@ -9,30 +9,6 @@ int KEY_DOWN = 2621440; //down
 int KEY_LEFT = 2424832; //left
 int KEY_RIGHT = 2555904; //right
 
-BOOL CALLBACK EnumWindowsProc_0(HWND hWnd, LPARAM IProgress)
-{
-	if (::FindWindowExA(hWnd, NULL, "SHELLDLL_DefView", NULL) != NULL)
-	{
-		HWND tempHwnd = ::FindWindowExA(NULL, hWnd, "WorkerW", NULL);
-		::ShowWindow(tempHwnd, 0);
-	}
-	return true;
-}
-
-void SetDesktop(char FormName[])
-{
-	setWindowProperty(FormName, CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
-	HWND hWnd = ::FindWindowA("Progman", NULL);
-	HWND my_hWnd = ::FindWindowA(NULL, FormName);
-
-	if (hWnd != NULL && my_hWnd != NULL)
-	{
-		MoveWindow(my_hWnd, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), true);
-		SendMessageTimeout(hWnd, 0x52c, NULL, NULL, 0, 0x3e8, NULL);
-		EnumWindows(EnumWindowsProc_0, NULL);
-		SetParent(my_hWnd, hWnd);
-	}
-}
 
 int main()
 {
@@ -42,19 +18,7 @@ int main()
 	//resizeWindow(si.name(), 500, 500);
 	//String name = si.name();
 	//setMouseCallback(si.name(), on_MouseMain, (void*) &si.c);
-	char str[] = "windows1";
-	cv::namedWindow("windows1", 0); //创建一个窗口
-	HWND hWnd = (HWND) cvGetWindowHandle("windows1");//获取子窗口的HWND
-	HWND hParentWnd = ::GetParent(hWnd);//获取父窗口HWND。父窗口是我们要用的
 
-	//::SetWindowPos(hParentWnd, HWND_TOPMOST, 100, 1, 500, 500, SWP_NOSIZE | SWP_NOMOVE); //修改窗口为最顶部
-
-	//隐藏窗口标题栏
-	long style = GetWindowLong(hParentWnd, GWL_STYLE);
-	style &= ~(WS_CAPTION);
-	// style &= ~(WS_MAXIMIZEBOX);
-	SetWindowLong(hParentWnd, GWL_STYLE, style);
-	SetDesktop(str);
 	int key = '0';
 	while(1)
 	{
