@@ -277,6 +277,25 @@ int main()
 	GridImage GM(G, Img);
 
 
+	/*
+	
+	*/
+	char str[] = "windows1";
+	cv::namedWindow("windows1", 0); //创建一个窗口
+	HWND hWnd = (HWND) cvGetWindowHandle("windows1");//获取子窗口的HWND
+	HWND hParentWnd = ::GetParent(hWnd);//获取父窗口HWND。父窗口是我们要用的
+
+	//::SetWindowPos(hParentWnd, HWND_TOPMOST, 100, 1, 500, 500, SWP_NOSIZE | SWP_NOMOVE); //修改窗口为最顶部
+
+	//隐藏窗口标题栏
+	long style = GetWindowLong(hParentWnd, GWL_STYLE);
+	style &= ~(WS_CAPTION);
+	// style &= ~(WS_MAXIMIZEBOX);
+	SetWindowLong(hParentWnd, GWL_STYLE, style);
+	SetDesktop(str);
+	/*
+	
+	*/
 	imshow(FormGrid, Img);
 	//SetDesktop(FormGrid);
 

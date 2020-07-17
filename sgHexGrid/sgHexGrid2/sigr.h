@@ -144,13 +144,36 @@ namespace gh
 	
 	class conf
 	{
+		//static double root3 = 1.73205;
 	public:
 		conf();
+		conf operator=(const conf &c);
+		void reRoot3R();
+		void setR(double r);
+		void setMouse(int x, int y);
+		void reSecCon(int x, int y);
+
+
+		int mouseX();
+		int mouseY();
+		int secConX();
+		int secConY();
+
+		double tarConX();
+		double tarConY();
 
 		Scalar bgc();
 		double r();
 		double w();
 		double R();
+		double root3R();
+
+	public:
+		double sgTarConX = 0;
+		double sgTarConY = 0;
+
+		int sgMouseX = 0;
+		int sgMouseY = 0;
 
 	private:
 		Scalar sgBGC = Scalar(255, 255, 200);
@@ -158,10 +181,10 @@ namespace gh
 		sgGridMode sgGM;
 		int sgSecConX = 640;
 		int sgSecConY = 360;
-		double sgTarConX = 0;
-		double sgTarConY = 0;
+
 		double sgHexR = 4.8;
 		double sgSpaceW=1.8;
+		double sgRoot3R = 11.4315;
 		double b;
 		double dr;
 	};
@@ -204,6 +227,8 @@ namespace gh
 		
 		void set(Scalar c);
 		void set(int sgRow_, int sgCol_);
+		int row();
+		int col();
 		Mat img();
 		Mat sgImg = Mat(1280, 720, CV_8UC3);
 
@@ -217,12 +242,15 @@ namespace gh
 	{
 	public:
 		sigr();
-		sigr(int pRow_, int pCol_,int gRow_,int gCol_);
+		sigr(int pRow_, int pCol_, int gRow_, int gCol_);
+	
+
+	public:
+		conf c;
 	private:
 		pic p;
 		grid g;
 		rule r;
-		conf c;
 		sgBlock b;
 		char *sgWindowName = (char*)"Undefined";
 		HWND sgMainForm = nullptr;
@@ -231,7 +259,11 @@ namespace gh
 		void bgc();
 		void draw();
 		void show();
-
+		void SetCReSecCon();
+		void fillhex(int i, int j);
+		char* name();
+	private:
+		void on_MouseHandle(int event, int x, int y, int flags, void*parm );
 	};
 
 }
