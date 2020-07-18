@@ -14,10 +14,10 @@ int main()
 {
 	sigr si(360, 640, 12, 16);
 	si.draw();
-	si.show();
 	//resizeWindow(si.name(), 500, 500);
 	//String name = si.name();
 	//setMouseCallback(si.name(), on_MouseMain, (void*) &si.c);
+	RECT w;
 
 	int key = '0';
 	while(1)
@@ -25,9 +25,23 @@ int main()
 		key = '0';
 
 		si.draw();
-		si.show();
 
-		//key = waitKey(200);
+		//////
+
+		//GetClientRect(si.handle(), &w);
+		//cout << w.bottom << " " << w.left << " " << w.right << " " << w.top << endl;
+		//GetWindowRect(si.handle(), &w);
+		//cout << w.bottom << " " << w.left << " " << w.right << " " << w.top << endl;
+		//cout << w.bottom - w.top - 41 << " " << w.right - w.left - 18 << endl;
+		///*401 658*/
+		///*360 640*/
+		///* 41  18*/
+
+		//cout << IsWindow(si.handle()) << endl;
+		cout << si.c.R() << endl;
+
+
+		//////
 		key = waitKeyEx(10);
 		if (key == ' ')
 			break;
@@ -35,12 +49,6 @@ int main()
 			si.c.setR(si.c.r() + 1);
 		else if (key == '-')
 			si.c.setR(si.c.r() - 1);
-		/*
-		Key :2490368 up
-		Key :2621440 down
-		Key :2424832 left
-		Key :2555904 right
-		*/
 		if (key == KEY_UP)
 		{
 			si.c.sgTarConY--;
@@ -57,9 +65,9 @@ int main()
 		{
 			si.c.sgTarConX++;
 		}
-		//cout << "Key :" << key << endl;
 
 	}
+	cout << IsWindow(si.handle()) << endl;
 	return 0;
 }
 

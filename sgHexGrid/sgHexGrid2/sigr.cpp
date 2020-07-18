@@ -297,25 +297,30 @@ void gh::sigr::draw()
 	double tx = c.secConX(), ty = c.secConY();
 	double tax = c.tarConX(), tay = c.tarConY();
 	double t = (double) cv::getTickCount();
-	for (int i = 0; i < 10; i++)
+
+	for (int i = -c.rl.sgM; i < c.rl.sgM; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = -c.rl.sgN ; j < c.rl.sgN; j++)
 		{
-			m = i;
-			n = j;
-			n % 2 ? dx = (m -0.5) * root3 : dx = (m )* root3;
-			dy = c.R() * n * 3 / 2;
+			j % 2 ? dx = (i - 0.25) * c.root3R() : dx = (i + 0.25)* c.root3R();
+			dy = c.R() * j * 1.5;
 			for (int k = 0; k < 6; k++)
 			{
 				point[0][k].x = cvRound(dx + tax + tx + c.r() * cosTheta[k]);
 				point[0][k].y = cvRound(dy + tay + ty + c.r() * sinTheta[k]);
 			}
-			if ((1+i*j)%2)
-			fillConvexPoly(p.sgImg,*pp, *np,black , LINE_AA);// , LINE_AA)
+
+			if ((1 + i * j) % 2)
+			{
+				fillConvexPoly(p.sgImg, *pp, *np, black, LINE_AA);// , LINE_AA)
+			}
+
 			else
 			{
-				fillConvexPoly(p.sgImg, *pp, *np, Scalar(255,255,255), LINE_AA);
+				fillConvexPoly(p.sgImg, *pp, *np, Scalar(255, 255, 255), LINE_AA);
 			}
+			//fillhex(i, j, black);
+
 		}
 	}
 
@@ -326,9 +331,8 @@ void gh::sigr::draw()
 	putText(p.sgImg, to_string(t), Point(10, p.row()-10), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255));
 	putText(p.sgImg, to_string(c.mouseX()), Point(10, p.row() - 25), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255));
 	putText(p.sgImg, to_string(c.mouseY()), Point(55, p.row() - 25), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255));
-	//cout << c.sgMouseY << endl;
-	//imshow(sgWindowName, p.img());
-	//waitKey(2000);
+
+	show();
 }
 
 void on_MouseMain(int event, int x, int y, int flags, void *parm)
@@ -366,13 +370,16 @@ void gh::sigr::show()
 {
 	if (sgMainForm == nullptr)
 	{
-		namedWindow(sgWindowName, WINDOW_NORMAL);//p.img());
+		namedWindow(sgWindowName, WINDOW_NORMAL);
+		resizeWindow(sgWindowName, p.col(), p.row());
+		sgMainForm = FindWindowA(NULL, sgWindowName);
 		setMouseCallback(sgWindowName, on_MouseMain, (void*)&c);// (void*) &c);
 	}
 	else if (sgMainForm != FindWindowA(NULL, sgWindowName))
 	{
+		namedWindow(sgWindowName, WINDOW_NORMAL);
 		sgMainForm = FindWindowA(NULL, sgWindowName);
-		//setMouseCallback(sgWindowName, on_Mouse, (void*) &c);// (void*) &c);
+		setMouseCallback(sgWindowName, on_MouseMain, (void*) &c);// (void*) &c);
 	}
 	imshow(sgWindowName, p.img());
 }
@@ -382,32 +389,44 @@ void gh::sigr::SetCReSecCon()
 	c.reSecCon(p.col() / 2, p.row() / 2);
 }
 
-void gh::sigr::fillhex(int i, int j)
+void gh::sigr::fillhex(int i, int j, Scalar color)
 {
 	static double cosTheta[6] = { 0.866025, 0., -0.866025, -0.866025, 0., 0.866025 };
 	static double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
-	double dx, dy;
-	double tx=30, ty=50;
 	
-	Scalar black(0, 0, 0);
-
 	Point point[1][6];
 	int np[] = { 6 };
 	const Point* pp[1] = { point[0] };
 
+	double tx = c.secConX(), ty = c.secConY();
+	double tax = c.tarConX(), tay = c.tarConY();
+	double dx, dy;
+
 	j % 2 ? dx = (i - 0.25) * c.root3R() : dx = (i + 0.25)* c.root3R();
-	dy = c.R() * j * 3 / 2;
+	dy = c.R() * j * 1.5;
 	for (int k = 0; k < 6; k++)
 	{
-		point[0][k].x = cvRound(dx + tx + c.r() * cosTheta[k]);
-		point[0][k].y = cvRound(dy + ty + c.r() * sinTheta[k]);
+		point[0][k].x = cvRound(dx + tax + tx + c.r() * cosTheta[k]);
+		point[0][k].y = cvRound(dy + tay + ty + c.r() * sinTheta[k]);
 	}
-	fillConvexPoly(p.sgImg, *pp, *np, black, LINE_AA);
+	if (c.R() < 10.5)
+	{
+		line(p.sgImg, point[0][0], point[0][3], color, 1, LINE_AA);
+	}
+	else
+	{
+		fillConvexPoly(p.sgImg, *pp, *np, color, LINE_AA);
+	}
 }
 
 char * gh::sigr::name()
 {
 	return sgWindowName;
+}
+
+HWND gh::sigr::handle()
+{
+	return sgMainForm;
 }
 
 void gh::sigr::on_MouseHandle(int event, int x, int y, int flags, void * )
@@ -474,6 +493,7 @@ gh::sgGridMode::sgGridMode(sgMode u, sgMode v)
 
 gh::conf::conf()
 {
+	setR(6);
 }
 
 gh::conf gh::conf::operator=(const conf & c_)
@@ -486,6 +506,26 @@ void gh::conf::reSecCon(int x,int y)
 {
 	sgSecConX = x;
 	sgSecConY = y;
+	setRenderLimit();
+}
+
+void gh::conf::setRenderLimit()
+{
+	//sgSecConX / sgRoot3R;//
+	//(sgSecConX - (sgRoot3R / 2)) / sgRoot3R + 0.5
+	rl.sgM = cvCeil(sgSecConX  / sgRoot3R)+1;
+	rl.sgN = cvCeil(sgSecConY / R())+1;
+	if (rl.sgM < 0)rl.sgM = 0;
+	if (rl.sgN < 0)rl.sgN = 0;
+}
+
+void gh::conf::reTheta()
+{
+	for (int k = 0; k < 6; k++)
+	{
+		ThetaX[k]=r() * cosTheta[k];
+		ThetaY[k]=r() * sinTheta[k];
+	}
 }
 
 void gh::conf::reRoot3R()
@@ -496,7 +536,18 @@ void gh::conf::reRoot3R()
 void gh::conf::setR(double r)
 {
 	sgHexR = r;
+	if (r <= 0) r = -r;
+	setW(sgHexR*0.25);
+	reTheta();
 	reRoot3R();
+	setRenderLimit();
+}
+
+void gh::conf::setW(double w)
+{
+	sgSpaceW = w;
+	if (sgSpaceW >= 3)sgSpaceW = 3;
+
 }
 
 void gh::conf::setMouse(int x, int y)
@@ -658,3 +709,7 @@ gh::sgUV::sgUV(int u, int v)
 	sgU = u;
 	sgV = v;
 }
+
+gh::sgRenderLimit::sgRenderLimit() :sgRenderLimit(0, 0) {}
+
+gh::sgRenderLimit::sgRenderLimit(int m, int n) : sgM(m), sgN(n) {}

@@ -94,6 +94,16 @@ namespace gh
 		sgBlock **sgGrid=nullptr;
 	};
 
+	class sgRenderLimit
+	{
+	public:
+		sgRenderLimit();
+		sgRenderLimit(int m, int n);
+
+		long int sgM;
+		long int sgN;
+	};
+
 	class sgRect
 	{
 	public:
@@ -150,9 +160,11 @@ namespace gh
 		conf operator=(const conf &c);
 		void reRoot3R();
 		void setR(double r);
+		void setW(double w);
 		void setMouse(int x, int y);
 		void reSecCon(int x, int y);
-
+		void setRenderLimit();
+		void reTheta();
 
 		int mouseX();
 		int mouseY();
@@ -175,6 +187,9 @@ namespace gh
 		int sgMouseX = 0;
 		int sgMouseY = 0;
 
+		sgRenderLimit rl;
+		double ThetaX[6];
+		double ThetaY[6];
 	private:
 		Scalar sgBGC = Scalar(255, 255, 200);
 		
@@ -182,9 +197,9 @@ namespace gh
 		int sgSecConX = 640;
 		int sgSecConY = 360;
 
-		double sgHexR = 4.8;
-		double sgSpaceW=1.8;
-		double sgRoot3R = 11.4315;
+		double sgHexR;
+		double sgSpaceW;
+		double sgRoot3R;
 		double b;
 		double dr;
 	};
@@ -260,8 +275,9 @@ namespace gh
 		void draw();
 		void show();
 		void SetCReSecCon();
-		void fillhex(int i, int j);
+		void fillhex(int i, int j, Scalar color);
 		char* name();
+		HWND handle();
 	private:
 		void on_MouseHandle(int event, int x, int y, int flags, void*parm );
 	};
