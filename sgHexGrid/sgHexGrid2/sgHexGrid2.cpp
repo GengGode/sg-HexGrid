@@ -12,8 +12,10 @@ int KEY_RIGHT = 2555904; //right
 
 int main()
 {
-	sigr si(360, 640, 12, 16);
+	sigr si(600, 800, 12, 16);
 	si.draw();
+	si.b.Rand();
+
 	//resizeWindow(si.name(), 500, 500);
 	//String name = si.name();
 	//setMouseCallback(si.name(), on_MouseMain, (void*) &si.c);
@@ -23,7 +25,7 @@ int main()
 	while(1)
 	{
 		key = '0';
-
+		si.b.Rand();
 		si.draw();
 
 		//////
@@ -38,7 +40,7 @@ int main()
 		///* 41  18*/
 
 		//cout << IsWindow(si.handle()) << endl;
-		cout << si.c.R() << endl;
+		/*cout << si.c.R() << endl;*/
 
 
 		//////
@@ -64,6 +66,7 @@ int main()
 		else if (key == KEY_RIGHT)
 		{
 			si.c.sgTarConX++;
+			resizeWindow(si.name(), 500, 500);
 		}
 
 	}

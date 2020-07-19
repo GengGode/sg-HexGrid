@@ -33,7 +33,7 @@ namespace gh
 		sgMode sgU = sgX;
 		sgMode sgV = sgJ;
 	};
-	
+
 	class sgCoor
 	{
 	public:
@@ -83,6 +83,10 @@ namespace gh
 	private:
 		sgUV sgCoor;
 		unsigned char sgMat[127][127] = { 0 };
+
+	public:
+		void Rand();
+		void Rand(double sgSurvivalRate_);
 	};
 
 	class sgBlocks
@@ -91,7 +95,7 @@ namespace gh
 		sgBlocks();
 
 	private:
-		sgBlock **sgGrid=nullptr;
+		sgBlock **sgGrid = nullptr;
 	};
 
 	class sgRenderLimit
@@ -120,12 +124,8 @@ namespace gh
 	{
 	public:
 		sgRenderRect();
-		sgRenderRect(int tx,int ty,int bx,int by);
+		sgRenderRect(int tx, int ty, int bx, int by);
 	private:
-		//int sgTopL;
-		//int sgTopR;
-		//int sgDowL;
-		//int sgDowR;
 		int sgTopLeftX;
 		int sgTopLeftY;
 		int sgBotRighX;
@@ -144,14 +144,15 @@ namespace gh
 		void set(int sState_, int eState_, int tNeighbor_);
 		void set(int sState_, int eState_, int sNeighbor_, int eNeighbor_);
 
-	private:
+	public:
 		sgStateColor sgColor;
+	private:
 		unsigned char sgState;
 		unsigned char sgNeighborhood;
 		bool ***sgStateTransitionTable;
 
 	};
-	
+
 	class conf
 	{
 		//static double root3 = 1.73205;
@@ -164,6 +165,7 @@ namespace gh
 		void setMouse(int x, int y);
 		void reSecCon(int x, int y);
 		void setRenderLimit();
+		void reBlockAddress();
 		void reTheta();
 
 		int mouseX();
@@ -188,11 +190,12 @@ namespace gh
 		int sgMouseY = 0;
 
 		sgRenderLimit rl;
+		sgRenderLimit BlockAddress;
 		double ThetaX[6];
 		double ThetaY[6];
 	private:
 		Scalar sgBGC = Scalar(255, 255, 200);
-		
+
 		sgGridMode sgGM;
 		int sgSecConX = 640;
 		int sgSecConY = 360;
@@ -218,7 +221,7 @@ namespace gh
 		int row();
 		int col();
 		int mat(int i, int j);
-		
+
 		void One();
 		void Zero();
 		void Rand();
@@ -239,7 +242,7 @@ namespace gh
 		pic();
 		pic(int sgLen_);
 		pic(int sgRow_, int sgCol_);
-		
+
 		void set(Scalar c);
 		void set(int sgRow_, int sgCol_);
 		int row();
@@ -258,17 +261,19 @@ namespace gh
 	public:
 		sigr();
 		sigr(int pRow_, int pCol_, int gRow_, int gCol_);
-	
+
 
 	public:
 		conf c;
+		sgBlock b;
 	private:
 		pic p;
 		grid g;
 		rule r;
-		sgBlock b;
+		
 		char *sgWindowName = (char*)"Undefined";
 		HWND sgMainForm = nullptr;
+		RECT sgFormSize;
 
 	public:
 		void bgc();
@@ -278,64 +283,14 @@ namespace gh
 		void fillhex(int i, int j, Scalar color);
 		char* name();
 		HWND handle();
+		RECT rect();
+		void statusBar(double time);
+		void evolution();
 	private:
-		void on_MouseHandle(int event, int x, int y, int flags, void*parm );
+		void rePic();
+		void reRect();
+		RECT getClientRect();
+		void on_MouseHandle(int event, int x, int y, int flags, void*parm);
 	};
 
 }
-/*
-namespace ghm
-{
-	class sgArray;
-
-	class Matrix
-	{
-	public:
-		Matrix(int r = 0, int c = 0);
-		class sgArray
-		{
-			friend class Matrix;
-		public:
-			int & operator[](int j) const; //列标
-		private:
-			int row;
-			int * sgArr;
-		};
-		sgArray & operator[](int i) const //行标
-		{
-			return sgArr[i];
-		}
-	private:
-		int row;
-		int col;
-		sgArray * sgArr;
-	};
-
-	Matrix::Matrix(int r, int c)
-	{
-
-		row = r;
-		col = c;
-		int i, j;
-		row = r;
-		sgArr = new sgArray[r];
-		for (i = 0; i < c; i++)
-		{
-			sgArr[i].sgArr = new int[c];
-			sgArr[i].row = c;
-		}
-		for (i = 0; i < r; i++)
-		{
-			for (j = 0; j < c; j++)
-			{
-				sgArr[i].sgArr[j] = i * col + j;
-			}
-		}
-	}
-
-	int & Matrix::sgArray::operator [](int j) const
-	{
-		return sgArr[j];
-	}
-}
-*/
