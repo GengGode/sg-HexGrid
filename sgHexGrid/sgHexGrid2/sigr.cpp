@@ -265,7 +265,7 @@ gh::sigr::sigr(int pRow_, int pCol_, int gRow_, int gCol_)
 {
 	p = pic(pRow_, pCol_);
 	g = grid(gRow_, gCol_);
-	c.reSecCon(pCol_ / 2, pRow_ / 2);
+	c.setSecCon(pCol_ / 2, pRow_ / 2);
 }
 
 void gh::sigr::bgc()
@@ -279,28 +279,22 @@ void gh::sigr::draw()
 	//sgRenderRect ActivationRect(0,0,127,127);
 	/******/
 	bgc();
-	SetCReSecCon();
+	SetCsetSecCon();
 
 	static double cosTheta[6] = { 0.866025, 0., -0.866025, -0.866025, 0., 0.866025 };
 	static double sinTheta[6] = { 0.5,1,0.5,-0.5,-1,-0.5 };
 
 	double dx, dy;
-	int m, n;
 
-	double root3 = 1.7321*c.R();
-	double In[2][6] = { 0 };
 	Point point[1][6];
 	int np[] = { 6 };
 	const Point* pp[1] = { point[0] };
-	Scalar black(0, 0, 0);
 
 	double tx = c.secConX(), ty = c.secConY();
 	double tax = c.tarConX(), tay = c.tarConY();
 	double t = (double) cv::getTickCount();
 
 	Scalar C;
-
-
 
 	for (int i = -c.rl.sgM; i <= c.rl.sgM; i++)
 	{
@@ -329,11 +323,11 @@ void gh::sigr::draw()
 				fillConvexPoly(p.sgImg, *pp, *np, C, LINE_AA);
 			}
 			fillhex(c.BlockAddress.sgM - c.rl.sgM, c.BlockAddress.sgN - c.rl.sgN, Scalar(200,200,255));
-
 		}
 	}
 
 	circle(p.sgImg, Point(tx, ty), 3, Scalar(0, 0, 255));
+	circle(p.sgImg, Point(c.mouseX(), c.mouseY()), 4, Scalar(0, 0, 255));
 
 	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
 	statusBar(t);
@@ -350,6 +344,7 @@ void on_MouseMain(int event, int x, int y, int flags, void *parm)
 		case EVENT_MOUSEMOVE:
 		{
 			c.setMouse(x, y);
+			
 			//cout << "Mouse : " << x << ":" << y << endl;
 		}
 		break;
@@ -398,9 +393,9 @@ void gh::sigr::show()
 	
 }
 
-void gh::sigr::SetCReSecCon()
+void gh::sigr::SetCsetSecCon()
 {
-	c.reSecCon(p.col() / 2, p.row() / 2);
+	c.setSecCon(p.col() / 2, p.row() / 2);
 }
 
 void gh::sigr::fillhex(int i, int j, Scalar color)
@@ -455,15 +450,18 @@ RECT gh::sigr::rect()
 
 void gh::sigr::statusBar(double time)
 {
-	putText(p.sgImg, to_string(1.0/time), Point(10, p.row() - 10), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2, LINE_AA);
+	Mat red(70,170,CV_8UC3,Scalar(255,255,0));
+	Mat tmp = p.sgImg(Rect(5, p.row()-75, 170, 70));
+	addWeighted(tmp, 0.1, red, 0.9, 0, tmp);
+	putText(p.sgImg, "Fps:" + to_string(1.0 / time), Point(10, p.row() - 10), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
 
-	putText(p.sgImg, to_string(c.mouseX()), Point(10, p.row() - 25), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2);
-	putText(p.sgImg, to_string(c.mouseY()), Point(55, p.row() - 25), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2);
+	putText(p.sgImg, "X:"+to_string(c.mouseX()), Point(10, p.row() - 25), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
+	putText(p.sgImg, "Y:"+to_string(c.mouseY()), Point(55, p.row() - 25), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
 
-	putText(p.sgImg, to_string(c.rl.sgM), Point(10, p.row() - 40), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2);
-	putText(p.sgImg, to_string(c.rl.sgN), Point(55, p.row() - 40), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2);
-	putText(p.sgImg, to_string(c.BlockAddress.sgM), Point(10, p.row() - 55), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2);
-	putText(p.sgImg, to_string(c.BlockAddress.sgN), Point(55, p.row() - 55), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 2);
+	putText(p.sgImg, "M:" + to_string(c.rl.sgM), Point(10, p.row() - 40), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
+	putText(p.sgImg, "N:" + to_string(c.rl.sgN), Point(55, p.row() - 40), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
+	putText(p.sgImg, "i:" + to_string(c.BlockAddress.sgM), Point(10, p.row() - 55), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
+	putText(p.sgImg, "j:" + to_string(c.BlockAddress.sgN), Point(55, p.row() - 55), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 255), 1, LINE_AA);
 }
 
 void gh::sigr::evolution()
@@ -476,6 +474,8 @@ void gh::sigr::rePic()
 	reRect();
 	int newSizeX = sgFormSize.bottom - sgFormSize.top - 2;
 	int newSizeY = sgFormSize.right - sgFormSize.left - 2;
+	if (newSizeX < 120)newSizeX = 120;
+	if (newSizeY < 180)newSizeY = 180;
 	pic tmp(newSizeX, newSizeY);
 	p = tmp;
 }
@@ -565,19 +565,19 @@ gh::conf gh::conf::operator=(const conf & c_)
 	return c;
 }
 
-void gh::conf::reSecCon(int x, int y)
+void gh::conf::setSecCon(int x, int y)
 {
 	sgSecConX = x;
 	sgSecConY = y;
-	setRenderLimit();
+	reRenderLimit();
 }
 
-void gh::conf::setRenderLimit()
+void gh::conf::reRenderLimit()
 {
 	//sgSecConX / sgRoot3R;//
 	//(sgSecConX - (sgRoot3R / 2)) / sgRoot3R + 0.5
-	rl.sgM = cvCeil(sgSecConX / sgRoot3R) + 1;
-	rl.sgN = cvCeil(sgSecConY / R());
+	//rl.sgM = cvCeil(sgSecConX / sgRoot3R) + 1;
+	//rl.sgN = cvCeil(sgSecConY / R());
 	rl.sgM = cvCeil((sqrt(3) / 3 * sgSecConX - 1 / 3 * sgSecConY) / R());
 	rl.sgN = cvCeil(sgSecConY * 2 / 3 / R());
 	if (rl.sgM < 0)rl.sgM = 0;
@@ -612,7 +612,7 @@ void gh::conf::setR(double r)
 	reTheta();
 	reRoot3R();
 	reBlockAddress();
-	setRenderLimit();
+	reRenderLimit();
 }
 
 void gh::conf::setW(double w)

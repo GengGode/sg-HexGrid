@@ -163,8 +163,8 @@ namespace gh
 		void setR(double r);
 		void setW(double w);
 		void setMouse(int x, int y);
-		void reSecCon(int x, int y);
-		void setRenderLimit();
+		void setSecCon(int x, int y);
+		void reRenderLimit();
 		void reBlockAddress();
 		void reTheta();
 
@@ -265,9 +265,9 @@ namespace gh
 
 	public:
 		conf c;
+		pic p;
 		sgBlock b;
 	private:
-		pic p;
 		grid g;
 		rule r;
 		
@@ -279,7 +279,7 @@ namespace gh
 		void bgc();
 		void draw();
 		void show();
-		void SetCReSecCon();
+		void SetCsetSecCon();
 		void fillhex(int i, int j, Scalar color);
 		char* name();
 		HWND handle();

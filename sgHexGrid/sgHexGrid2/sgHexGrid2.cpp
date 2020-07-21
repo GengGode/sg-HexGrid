@@ -19,7 +19,7 @@ int main()
 	//resizeWindow(si.name(), 500, 500);
 	//String name = si.name();
 	//setMouseCallback(si.name(), on_MouseMain, (void*) &si.c);
-	RECT w;
+	//RECT w;
 
 	int key = '0';
 	while(1)
@@ -44,7 +44,7 @@ int main()
 
 
 		//////
-		key = waitKeyEx(10);
+		key = waitKeyEx(100);
 		if (key == ' ')
 			break;
 		else if (key == '+')
