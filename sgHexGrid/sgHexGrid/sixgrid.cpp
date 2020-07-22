@@ -1078,17 +1078,17 @@ namespace sg
 		if (h_FormGrid != NULL)
 		{
 			GetWindowRect(h_FormGrid, &rctGrid);
-			MoveWindow(h_FormGrid, 10, 10, rctGrid.right - rctGrid.left, rctGrid.bottom - rctGrid.top, true);
+			MoveWindow(h_FormGrid, 50, 50, rctGrid.right - rctGrid.left, rctGrid.bottom - rctGrid.top, true);
 		}
 		if (h_FormBar != NULL)
 		{
 			GetWindowRect(h_FormBar, &rctBar);
-			MoveWindow(h_FormBar, rctGrid.right + 10, rctGrid.top, rctBar.right - rctBar.left, rctBar.bottom - rctBar.top, true);
+			MoveWindow(h_FormBar, rctGrid.right +50, rctGrid.top+50, rctBar.right - rctBar.left, rctBar.bottom - rctBar.top, true);
 		}
 		if (h_FormCon != NULL)
 		{
 			GetWindowRect(h_FormCon, &rctCon);
-			MoveWindow(h_FormCon, rctGrid.right + 10, rctBar.bottom, 600, rctCon.bottom - rctCon.top, true);
+			MoveWindow(h_FormCon, rctGrid.right + 50, rctBar.bottom+50, 600, rctCon.bottom - rctCon.top, true);
 		}
 	}
 
