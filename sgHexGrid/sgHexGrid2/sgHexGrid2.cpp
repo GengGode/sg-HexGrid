@@ -25,7 +25,7 @@ int main()
 	while(1)
 	{
 		key = '0';
-		si.b.Rand();
+		
 		si.draw();
 
 		//////

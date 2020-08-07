@@ -243,6 +243,7 @@ namespace gh
 		pic(int sgLen_);
 		pic(int sgRow_, int sgCol_);
 
+		void set(Mat m);
 		void set(Scalar c);
 		void set(int sgRow_, int sgCol_);
 		int row();

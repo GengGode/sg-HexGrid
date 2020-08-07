@@ -231,6 +231,11 @@ gh::pic::pic(int sgRow_, int sgCol_) : sgRow(sgRow_), sgCol(sgCol_)
 	sgImg = Mat(sgRow_, sgCol_, CV_8UC3);
 }
 
+void gh::pic::set(Mat m)
+{
+	sgImg = m;
+}
+
 void gh::pic::set(Scalar c)
 {
 	sgImg = c;
@@ -328,6 +333,7 @@ void gh::sigr::draw()
 
 	circle(p.sgImg, Point(tx, ty), 3, Scalar(0, 0, 255));
 	circle(p.sgImg, Point(c.mouseX(), c.mouseY()), 4, Scalar(0, 0, 255));
+	//cout <<"Main "<< &p.sgImg << endl;
 
 	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
 	statusBar(t);
@@ -337,15 +343,24 @@ void gh::sigr::draw()
 
 void on_MouseMain(int event, int x, int y, int flags, void *parm)
 {
-	gh::conf& c = *(gh::conf*)parm;
+	gh::sigr& s = *(gh::sigr*)parm;
+	gh::pic& p = s.p;
+	gh::conf& c = s.c;
 	double tmpc = c.r();
+	Mat tmpm = p.sgImg;
+	Mat mat(100, 200, CV_8UC3, Scalar(0, 255, 0));
+	imshow("123", tmpm);
 	switch (event)
 	{
 		case EVENT_MOUSEMOVE:
 		{
 			c.setMouse(x, y);
-			
+			//p.sgImg = Scalar(0, 0, 123);
+			circle(p.sgImg, Point(x, y), 6, Scalar(0, 0, 255));
+			circle(mat, Point(x,y), 6, Scalar(0, 0, 255));
+			//cout <<"     "<< &p.sgImg << endl;
 			//cout << "Mouse : " << x << ":" << y << endl;
+			imshow("123", mat);
 		}
 		break;
 		case EVENT_MOUSEWHEEL:
@@ -374,14 +389,14 @@ void gh::sigr::show()
 		namedWindow(sgWindowName, WINDOW_NORMAL);
 		resizeWindow(sgWindowName, p.col(), p.row());
 		sgMainForm = FindWindowA(NULL, sgWindowName);
-		setMouseCallback(sgWindowName, on_MouseMain, (void*) &c);// (void*) &c);
+		setMouseCallback(sgWindowName, on_MouseMain, (void*) this);// (void*) &c);
 		reRect();
 	}
 	else if (sgMainForm != FindWindowA(NULL, sgWindowName))
 	{
 		namedWindow(sgWindowName, WINDOW_NORMAL);
 		sgMainForm = FindWindowA(NULL, sgWindowName);
-		setMouseCallback(sgWindowName, on_MouseMain, (void*) &c);// (void*) &c);
+		setMouseCallback(sgWindowName, on_MouseMain, (void*) this);// (void*) &c);
 		reRect();
 	}
 	if (!EqualRect(&sgFormSize, &getClientRect()))
