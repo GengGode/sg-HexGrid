@@ -332,8 +332,7 @@ void gh::sigr::draw()
 	}
 
 	circle(p.sgImg, Point(tx, ty), 3, Scalar(0, 0, 255));
-	circle(p.sgImg, Point(c.mouseX(), c.mouseY()), 4, Scalar(0, 0, 255));
-	//cout <<"Main "<< &p.sgImg << endl;
+	//circle(p.sgImg, Point(c.mouseX(), c.mouseY()), 4, Scalar(0, 0, 255));
 
 	t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
 	statusBar(t);
@@ -347,20 +346,13 @@ void on_MouseMain(int event, int x, int y, int flags, void *parm)
 	gh::pic& p = s.p;
 	gh::conf& c = s.c;
 	double tmpc = c.r();
-	Mat tmpm = p.sgImg;
-	Mat mat(100, 200, CV_8UC3, Scalar(0, 255, 0));
-	imshow("123", tmpm);
 	switch (event)
 	{
 		case EVENT_MOUSEMOVE:
 		{
 			c.setMouse(x, y);
-			//p.sgImg = Scalar(0, 0, 123);
-			circle(p.sgImg, Point(x, y), 6, Scalar(0, 0, 255));
-			circle(mat, Point(x,y), 6, Scalar(0, 0, 255));
-			//cout <<"     "<< &p.sgImg << endl;
-			//cout << "Mouse : " << x << ":" << y << endl;
-			imshow("123", mat);
+			circle(p.sgImg, Point(x, y), 10, Scalar(0, 0, 255));
+			s.show();
 		}
 		break;
 		case EVENT_MOUSEWHEEL:
